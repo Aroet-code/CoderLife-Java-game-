@@ -1,0 +1,14 @@
+So basically, this file explains how the resolution size works.
+
+The default size number is 4, which means that the resolution is multiplied by 40 to get fullscreened
+The number in the parentheses means the resolution with the most common 16:9
+0 = 0 (0x0)
+1 = 5 (80x45)
+2 = 10 (160x90)
+3 = 20 (320x180)
+4 = 40 (640x360) // pick this one if you don't know what you're doing
+5 = 80 (1280x720) HD
+6 = 120 (1920x1080) Full HD
+7 = 160 (2560x1440) QHD
+8 = 240 (3840x2160) 4K
+9 = 480 (7680x4320) 8K

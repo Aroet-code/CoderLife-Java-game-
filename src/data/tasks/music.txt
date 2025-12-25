@@ -1,0 +1,45 @@
+SoundTracks:
+-event{
+--style
+--theme
+}
+
+-At home{
+--fade-in and fade-out
+--
+}
+
+-Raining(alone){
+--Piano, melancholic
+--
+}
+
+-Raining(with someone){
+--Piano, joyful
+--
+}
+
+-Task completed{
+--Victorious, short
+--
+}
+
+-Nature {
+--Simple, slow
+--
+}
+
+-Busy city {
+--Simple, slow
+--
+}
+
+-Waiting for someone (thrilled) {
+--Thrilling, fearful
+--
+}
+
+-Waiting for someone (peaceful) {
+--Joyful, exciting
+--
+}

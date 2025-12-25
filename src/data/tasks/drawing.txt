@@ -1,0 +1,36 @@
+what things do i need to draw?
+----CAFE----
+1. Exterior of the cafe     DONE!!!
+- door
+- walls
+- fences
+- places where people eat
+-- umbrellas
+-- tables
+-- chairs
+- decorations
+-- flowers
+- label
+2. Interior of the cafe
+- tables
+- chairs (sofas)
+- bookshelf
+- foods display
+-- don't draw the food just yet
+- floor
+-- floor itself
+-- carpets
+- walls
+-- a door behind a counter
+-- a toilet door (I plan on making one of the player's dates call him out on not washing his hands before starting to eat)
+Just so you know, I will probably need to draw a first perspective look on the cafe as well, just for a date. Like, a view should include, a window, the date, the table, a part of the cafe. There should also be some noise that people usually hear in cafes. (Check out Everlasting summer's dining room sfx)
+3. Toilet room
+description:
+A small room with a sink on the right and one cabin in the middle. Tiled floor. (Cyan/dark cyan) and (white/gray) color theme. 
+- A cabin
+-- Opens/closes
+-- Toilet inside
+- A sink
+-- Streams water (with an sfx)/doesn't
+- A mirror
+-- Just make it black, i will add the reflection myself
