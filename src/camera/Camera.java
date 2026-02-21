@@ -40,6 +40,7 @@ public class Camera extends JPanel implements Flow.Subscriber {
         this.width = this.resolution.getWidth() * this.scaleNumber;
         this.height = this.resolution.getHeight() * this.scaleNumber;
         this.setSize(this.width, this.height);
+//        this.setSize(1920, 1200);
         this.layers = layers;
     }
 

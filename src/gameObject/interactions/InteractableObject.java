@@ -8,6 +8,7 @@ import gameObject.image.ImageCreator;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 public class InteractableObject extends GameObject implements Interactable {
     private boolean interactable = true;
@@ -47,6 +48,11 @@ public class InteractableObject extends GameObject implements Interactable {
 
     @Override
     public void onMove(DebugArea2D playerArea) {
+
+    }
+
+    @Override
+    public void setCommand(Callable<Integer> command) {
 
     }
 

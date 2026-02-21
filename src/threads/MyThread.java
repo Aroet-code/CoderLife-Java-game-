@@ -4,11 +4,11 @@ import util.ObjCreator;
 
 public class MyThread implements Runnable{
     private long tick = 0;
+    private boolean enabled = false;
     @Override
     public void run() {
-        while (true) {
+        while (enabled) {
             try {
-
                 Thread.sleep(16);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -16,8 +16,16 @@ public class MyThread implements Runnable{
             if (tick % 4 == 0){
                 ObjCreator.animationController.animate();
             }
-            ObjCreator.camera.repaint();
+            ObjCreator.mainMenuBackground.repaint();
             tick++;
         }
+    }
+
+    public void enable(){
+        this.enabled = true;
+    }
+
+    public void disable(){
+        this.enabled = false;
     }
 }

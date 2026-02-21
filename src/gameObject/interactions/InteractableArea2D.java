@@ -6,6 +6,7 @@ import camera.Layer;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 public class InteractableArea2D extends DebugArea2D implements Interactable{
 
@@ -60,6 +61,11 @@ public class InteractableArea2D extends DebugArea2D implements Interactable{
 
     @Override
     public void onMove(DebugArea2D playerArea) {
+
+    }
+
+    @Override
+    public void setCommand(Callable<Integer> command) {
 
     }
 
