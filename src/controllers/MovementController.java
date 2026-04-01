@@ -85,26 +85,28 @@ public class MovementController {
     }
 
     public void moveX(String key){
-//        Vertex oldCoordinate = coordinatesController.getCoordinates(key);
+        Vertex oldCoordinate = coordinatesController.getCoordinates(key);
         Vertex newCoordinates = new Vertex((int) (coordinatesController.getCoordinates(key).getX() + (speeds.get(key) * axisMap.get(key).getX())),
                 (int) (coordinatesController.getCoordinates(key).getY()));
         coordinatesController.updateCoordinates(key, newCoordinates);
         if (!(collisionController.isPositionPossible("Player"))){
+//            axisMap.get(key).setX(0);
+//            stateMapX.replace(key, MovementState.STILL);
 //            System.out.println("Old coordinate x: " + oldCoordinate.getX() + " old coordinate y: " + oldCoordinate.getY());
 //            System.out.println("New coordinate x: " + newCoordinates.getX() + " new coordinate y: " + newCoordinates.getY());
-            axisMap.get(key).setX(0);
-//            coordinatesController.updateCoordinates(key, oldCoordinate);
+            coordinatesController.updateCoordinates(key, oldCoordinate);
         }
     }
 
     public void moveY(String key){
-//        Vertex oldCoordinate = coordinatesController.getCoordinates(key);
+        Vertex oldCoordinate = coordinatesController.getCoordinates(key);
         Vertex newCoordinates = new Vertex((int) (coordinatesController.getCoordinates(key).getX()),
                 (int) (coordinatesController.getCoordinates(key).getY() + (speeds.get(key) * axisMap.get(key).getY())));
         coordinatesController.updateCoordinates(key, newCoordinates);
         if (!(collisionController.isPositionPossible("Player"))){
-            axisMap.get(key).setY(0);
-//            coordinatesController.updateCoordinates(key, oldCoordinate);
+//            axisMap.get(key).setY(0);
+//            stateMapY.replace(key, MovementState.STILL);
+            coordinatesController.updateCoordinates(key, oldCoordinate);
         }
     }
 
@@ -138,7 +140,7 @@ public class MovementController {
             }
             moveY(key);
             if (Objects.equals(key, "Player")){
-                updateCameraCoordinates(0, (int) (axisMap.get(key).getY()*speeds.get(key)));
+                updateCameraCoordinates(0, (int) (axisMap.get(key).getY() * speeds.get(key)));
             }
         }
 

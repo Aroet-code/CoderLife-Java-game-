@@ -37,7 +37,7 @@ public class CollisionBatch {
         }
         List<String> restrictedKeys = collisionController.getRestrictedKeys();
         if (restrictedKeys == null){
-            System.out.println("No collisions are transferred to the CollisionBatch");
+            System.out.println("No restricted collisions are transferred to the CollisionBatch");
             return;
         }
         for (String key : restrictedKeys){
@@ -50,6 +50,30 @@ public class CollisionBatch {
                 case DEFAULT -> {
                     insideColor = new Color(20, 240, 240, 64);
                     outsideColor = new Color(20, 170, 240, 64);
+                }
+                case HOVER -> {
+                    insideColor = new Color(240, 0, 255, 64);
+                    outsideColor = new Color(170, 0, 255, 64);
+                }
+            }
+//            System.out.println("Working with the key: " + key + ". In collisionBatch.");
+            drawObject(g, coordinates, shape.getWidth(), shape.getHeight(), insideColor, outsideColor);
+        }
+        List<String> allowedKeys = collisionController.getAllowedKeys();
+        if (allowedKeys == null){
+            System.out.println("No allowed collisions are transferred to the CollisionBatch");
+            return;
+        }
+        for (String key : allowedKeys){
+            CollisionShape2D shape = collisionController.getAllowedShape(key);
+            CollisionState state = collisionController.getObjectCollisionState(key);
+            Vertex coordinates = collisionController.getCoordinates(key);
+            Color insideColor = null;
+            Color outsideColor = null;
+            switch (state){
+                case DEFAULT -> {
+                    insideColor = new Color(225, 191, 0, 64);
+                    outsideColor = new Color(255, 221, 0, 64);
                 }
                 case HOVER -> {
                     insideColor = new Color(240, 0, 255, 64);

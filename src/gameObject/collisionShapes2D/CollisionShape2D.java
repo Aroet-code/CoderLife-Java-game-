@@ -7,4 +7,5 @@ public interface CollisionShape2D {
     void setCenterCoordinates(Vertex coordinates);
     int getWidth();
     int getHeight();
+    Vertex[] getPoints();
 }

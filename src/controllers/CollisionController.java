@@ -1,9 +1,6 @@
 package controllers;
 
-import gameObject.collisionShapes2D.CollisionShape2D;
-import gameObject.collisionShapes2D.CollisionState;
-import gameObject.collisionShapes2D.RestrictedShape2D;
-import gameObject.collisionShapes2D.Vertex;
+import gameObject.collisionShapes2D.*;
 
 import java.util.*;
 
@@ -12,8 +9,10 @@ public class CollisionController {
     private HashMap<String, CollisionShape2D> collisions = new HashMap<>();
     private HashMap<String, CollisionState> states = new HashMap<>();
     private HashMap<String, RestrictedShape2D> restrictedShapes = new HashMap<>();
+    private HashMap<String, AllowedShape2D> allowedShapes = new HashMap<>();
     private List<String> keys = new ArrayList<>();
     private List<String> restrictedKeys = new ArrayList<>();
+    private List<String> allowedKeys = new ArrayList<>();
 
     public CollisionController(GameObjectCoordinatesController gameObjectCoordinatesController){
         this.coordinatesController = gameObjectCoordinatesController;
@@ -29,6 +28,12 @@ public class CollisionController {
         collisions.put(key, collisionShape);
         states.put(key, state);
         keys.add(key);
+    }
+
+    public void addAllowedShape(String key, AllowedShape2D allowedShape2D){
+        allowedShapes.put(key, allowedShape2D);
+        states.put(key, CollisionState.DEFAULT);
+        allowedKeys.add(key);
     }
 
     public void updateCoordinates(String key, int addX, int addY){
@@ -97,6 +102,18 @@ public class CollisionController {
                 return false;
             }
         }
+        for (Vertex point : mainShape.getPoints()) {
+            boolean flag = false;
+            for (AllowedShape2D allowedShape2D : allowedShapes.values()){
+                flag = allowedShape2D.contains(point);
+                if (flag){
+                    break;
+                }
+            }
+            if (!flag){
+                return false;
+            }
+        }
         return true;
     }
 
@@ -133,5 +150,13 @@ public class CollisionController {
             return;
         }
         restrictedShapes.remove(key);
+    }
+
+    public List<String> getAllowedKeys(){
+        return allowedKeys;
+    }
+
+    public AllowedShape2D getAllowedShape(String key){
+        return allowedShapes.get(key);
     }
 }

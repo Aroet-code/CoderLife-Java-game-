@@ -13,6 +13,16 @@ import java.io.File;
 
 public class GameObjectCreator {
     private static int restrictedAreaQuantity = 0;
+    private static int allowedAreaQuantity = 0;
+
+    public static void createAllowedArea(CollisionController collisionController, GameObjectCoordinatesController coordinatesController,
+                                         Vertex coords, int width, int height){
+        String key = "Allowed area " + allowedAreaQuantity;
+        AllowedRectangleShape2D shape = new AllowedRectangleShape2D(coords, width, height);
+        collisionController.addAllowedShape(key, shape);
+        coordinatesController.addCoordinates(key, coords);
+        allowedAreaQuantity++;
+    }
 
     public static void createRestrictedArea(CollisionController collisionController, GameObjectCoordinatesController coordinatesController,
                                             Vertex coords, int width, int height){
@@ -20,6 +30,7 @@ public class GameObjectCreator {
         RestrictedRectangleShape2D shape = new RestrictedRectangleShape2D(coords, width, height);
         collisionController.addRestrictedShape(key, shape);
         coordinatesController.addCoordinates(key, coords);
+        restrictedAreaQuantity++;
     }
 
     public static void createGameObject(GameObjectController gameObjectController, ImageController imageController,
