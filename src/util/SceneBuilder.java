@@ -1,0 +1,269 @@
+package util;
+
+import controllers.*;
+import gameObject.GameObjectCreator;
+import gameObject.GameObjectScene;
+import gameObject.collisionShapes2D.RestrictedRectangleShape2D;
+import gameObject.collisionShapes2D.Vertex;
+import ui.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+
+public class SceneBuilder {
+    public static HashMap<String, UIScene> buildUIScenes(JFrame screen){
+        HashMap<String, UIScene> scenes = new HashMap<>();
+
+        UIAnimationController uiAnimationController = GameController.getUiAnimationController();
+        HashMap<UIElementState, Image> rootContainerImages = new HashMap<>();
+        BufferedImage rootContainerImage = new BufferedImage(screen.getWidth(), screen.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        rootContainerImages.put(UIElementState.DEFAULT, rootContainerImage);
+
+        UICommandsManager commandsManager = GameController.getUiCommandsManager();
+
+        for (String name : new String[]{"MAIN_MENU", "MAIN_GAME"}){
+            UIController uiController = new UIController();
+            UIUserLinker uiUserLinker = new UIUserLinker(uiController);
+            switch (name){
+                case "MAIN_MENU" -> {
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Settings button", "SpinForward",
+                            "assets/images/UI/settingsButton",
+                            50, screen.getHeight() - 210, 50, screen.getHeight() - 210, null, null);
+                    UICreator.createTextLabel(uiController, uiAnimationController, "Keybinds text", "assets/textFiles/keybindsText", 0, 0,
+                            0, 0, new Font("Arial", Font.PLAIN, 16), Color.CYAN, Color.WHITE, 300, 210, 40,
+                            45, 5, new String[]{"NOT_INTERACTABLE"});
+                    UICreator.createTextLabel(uiController, uiAnimationController, "test", "assets/textFiles/settingsMenuText", 0, 0, 0, 0,
+                            new Font("Arial", Font.PLAIN, 16), Color.CYAN, Color.WHITE, 300, 500, 40, 65, 5, new String[]{"NOT_INTERACTABLE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Keybinds menu", null,
+                            "assets/images/UI/keybindsMenu", screen.getWidth() / 2 - 150, -300, screen.getWidth() / 2 - 150, 25,
+                            new String[]{"Keybinds text"}, new String[]{"NOT_INTERACTABLE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Test switch", "TurnSwitch",
+                            "assets/images/UI/testSwitch", 118, 150, 150, 150, null, new String[]{"SWITCH"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Keybinds button", "OpenKeybindsMenu",
+                            "assets/images/UI/keybindsButton", 70, 400, 70, 400,
+                            null, null);
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Settings menu", null,
+                            "assets/images/UI/settingsMenu", -300, 150, 25, 150,
+                            new String[]{"Test switch", "test", "Keybinds button"}, new String[]{"NO_ACTIVE_IMAGE", "NOT_INTERACTABLE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
+                            0, 0, new String[]{"Settings button", "Settings menu", "Keybinds menu"}, new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
+                }
+                case "MAIN_GAME" -> {
+
+                }
+            }
+            scenes.put(name, new UIScene(uiController, uiUserLinker));
+        }
+
+        return scenes;
+    }
+
+    public static HashMap<String, GameObjectScene> buildGameObjectScenes(){
+        HashMap<String, GameObjectScene> scenes = new HashMap<>();
+
+        GameObjectCommandsManager commandsManager = GameController.getGameObjectCommandsManager();
+        AnimationController animationController = GameController.getAnimationController();
+
+        for (String scene : new String[]{"MAIN_MENU", "MAIN_GAME"}) {
+            GameObjectController gameObjectController = new GameObjectController();
+            CollisionController collisionController = new CollisionController(GameController.getGameObjectCoordinatesController());
+            InteractionController interactionController = new InteractionController(collisionController, "Player");
+            InputMap inputMap = GameController.getScreen().getGamePanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+            ActionMap actionMap = GameController.getScreen().getGamePanel().getActionMap();
+            switch (scene){
+                case "MAIN_MENU" -> {
+                    inputMap.put(KeyStroke.getKeyStroke("ENTER"), "START_GAME");
+                    actionMap.put("START_GAME", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine.");
+                                InputCommandsManager.callCommand("START_GAME");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                }
+                case "MAIN_GAME" -> {
+                    inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), "BACK_TO_MAIN_MENU");
+                    actionMap.put("BACK_TO_MAIN_MENU", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine.");
+                                InputCommandsManager.callCommand("BACK_TO_MAIN_MENU");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("W"), "MOVE_UP");
+                    actionMap.put("MOVE_UP", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine.");
+                                InputCommandsManager.callCommand("MOVE_UP");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("S"), "MOVE_DOWN");
+                    actionMap.put("MOVE_DOWN", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine.");
+                                InputCommandsManager.callCommand("MOVE_DOWN");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("D"), "MOVE_RIGHT");
+                    actionMap.put("MOVE_RIGHT", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine.");
+                                InputCommandsManager.callCommand("MOVE_RIGHT");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("A"), "MOVE_LEFT");
+                    actionMap.put("MOVE_LEFT", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine.");
+                                InputCommandsManager.callCommand("MOVE_LEFT");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("released D"), "STOP_MOVING_X");
+                    actionMap.put("STOP_MOVING_X", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine.");
+                                InputCommandsManager.callCommand("STOP_MOVING_X");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("released A"), "STOP_MOVING_X");
+                    actionMap.put("STOP_MOVING_X", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine.");
+                                InputCommandsManager.callCommand("STOP_MOVING_X");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("released W"), "STOP_MOVING_Y");
+                    actionMap.put("STOP_MOVING_Y", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine.");
+                                InputCommandsManager.callCommand("STOP_MOVING_Y");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("released S"), "STOP_MOVING_Y");
+                    actionMap.put("STOP_MOVING_Y", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine.");
+                                InputCommandsManager.callCommand("STOP_MOVING_Y");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("F"), "INTERACT");
+                    actionMap.put("INTERACT", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine. The interaction, I mean");
+                                InputCommandsManager.callCommand("INTERACT");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("O"), "EXPAND");
+                    actionMap.put("EXPAND", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine. The interaction, I mean");
+                                InputCommandsManager.callCommand("EXPAND");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+                    inputMap.put(KeyStroke.getKeyStroke("P"), "SHRINK");
+                    actionMap.put("SHRINK", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+//                                System.out.println("It works just fine. The interaction, I mean");
+                                InputCommandsManager.callCommand("SHRINK");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
+
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Bg test", new Vertex(500, 500), 2, 2,
+                            "assets/images/gameObjects/bg test", false);
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Saturn", new Vertex(800, 800), 100, 100,
+                            "assets/images/gameObjects/saturn", false);
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Coffee", new Vertex(500, 800), 100, 100,
+                            "assets/images/gameObjects/coffee", false);
+                    GameObjectCreator.createMovingObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Player", new Vertex(600, 600), 160, 160,
+                            "assets/images/gameObjects/player", false, GameController.getMovementController(), 2);
+                    GameController.getGameObjectCommandsManager().addCommand("Coffee", new Callable<Integer>() {
+                        @Override
+                        public Integer call() throws Exception {
+                            GameController.getAnimationController().queueAnimation("Coffee");
+                            return 0;
+                        }
+                    });
+                    interactionController.addCommand("Coffee", "Coffee");
+
+                    GameObjectCreator.createRestrictedArea(collisionController, GameController.getGameObjectCoordinatesController(),
+                            new Vertex(200, 200), 100, 100);
+                }
+            }
+            scenes.put(scene, new GameObjectScene(collisionController, gameObjectController, interactionController, animationController,
+                    inputMap, actionMap));
+        }
+        GameController.getScreen().getGamePanel().setCoordinatesController(GameController.getGameObjectCoordinatesController());
+        return scenes;
+    }
+}
