@@ -33,7 +33,7 @@ public class Main {
         BackgroundAnimationCreator.create();
         GameController.getScreen().getGamePanel().setAnimation(BackgroundAnimationCreator.mainMenuAnimation);
 
-        GameController.getGameObjectCoordinatesController().updateMainCoordinates(new Vertex(600, 594));
+        GameController.getGameObjectCoordinatesController().updateMainCoordinates(new Vertex(600, 530));
 
         InputCommandsManager.createCommands();
         

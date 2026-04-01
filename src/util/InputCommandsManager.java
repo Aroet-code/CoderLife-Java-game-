@@ -90,5 +90,11 @@ public class InputCommandsManager {
             return 0;
         };
         commands.put("SHRINK", shrink);
+        Callable<Integer> switchFreeCameraMovement = () -> {
+            GameController.getMovementController().switchFollowPlayer();
+            GameController.getMovementController().switchAllowPlayerMovement();
+            return 0;
+        };
+        commands.put("FREE_CAMERA", switchFreeCameraMovement);
     }
 }

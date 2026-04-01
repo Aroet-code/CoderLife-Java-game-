@@ -53,7 +53,8 @@ public class SceneBuilder {
                             0, 0, new String[]{"Settings button", "Settings menu", "Keybinds menu"}, new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
                 }
                 case "MAIN_GAME" -> {
-
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
+                            0, 0, new String[]{}, new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
                 }
             }
             scenes.put(name, new UIScene(uiController, uiUserLinker));
@@ -234,6 +235,17 @@ public class SceneBuilder {
                             }
                         }
                     });
+                    inputMap.put(KeyStroke.getKeyStroke("C"), "FREE_CAMERA");
+                    actionMap.put("FREE_CAMERA", new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                InputCommandsManager.callCommand("FREE_CAMERA");
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    });
 
                     GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
                             collisionController, "Bg test", new Vertex(500, 500), 2, 2,
@@ -245,7 +257,7 @@ public class SceneBuilder {
                             collisionController, "Coffee", new Vertex(500, 800), 100, 100,
                             "assets/images/gameObjects/coffee", false);
                     GameObjectCreator.createMovingObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
-                            collisionController, "Player", new Vertex(600, 600), 160, 160,
+                            collisionController, "Player", new Vertex(600, 530), 100, 100,
                             "assets/images/gameObjects/player", false, GameController.getMovementController(), 2);
                     GameController.getGameObjectCommandsManager().addCommand("Coffee", new Callable<Integer>() {
                         @Override
@@ -259,7 +271,7 @@ public class SceneBuilder {
                     GameObjectCreator.createRestrictedArea(collisionController, GameController.getGameObjectCoordinatesController(),
                             new Vertex(200, 200), 100, 100);
                     GameObjectCreator.createAllowedArea(collisionController, GameController.getGameObjectCoordinatesController(),
-                            new Vertex(500, 500), 800, 800);
+                            new Vertex(500, 530), 430, 100);
                 }
             }
             scenes.put(scene, new GameObjectScene(collisionController, gameObjectController, interactionController, animationController,

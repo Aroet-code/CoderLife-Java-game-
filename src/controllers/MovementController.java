@@ -14,6 +14,8 @@ public class MovementController {
     private Map<String, MovementState> stateMapX = new HashMap<>();
     private Map<String, MovementState> stateMapY = new HashMap<>();
     private Map<String, Integer> speeds = new HashMap<>();
+    boolean followPlayer = true;
+    boolean allowPlayerMovement = true;
 
     public MovementController(GameObjectCoordinatesController gameObjectCoordinatesController){
         this.coordinatesController = gameObjectCoordinatesController;
@@ -85,6 +87,9 @@ public class MovementController {
     }
 
     public void moveX(String key){
+        if (key.equals("Player") && !allowPlayerMovement){
+            return;
+        }
         Vertex oldCoordinate = coordinatesController.getCoordinates(key);
         Vertex newCoordinates = new Vertex((int) (coordinatesController.getCoordinates(key).getX() + (speeds.get(key) * axisMap.get(key).getX())),
                 (int) (coordinatesController.getCoordinates(key).getY()));
@@ -106,6 +111,9 @@ public class MovementController {
     }
 
     public void moveY(String key){
+        if (key.equals("Player") && !allowPlayerMovement){
+            return;
+        }
         Vertex oldCoordinate = coordinatesController.getCoordinates(key);
         Vertex newCoordinates = new Vertex((int) (coordinatesController.getCoordinates(key).getX()),
                 (int) (coordinatesController.getCoordinates(key).getY() + (speeds.get(key) * axisMap.get(key).getY())));
@@ -145,6 +153,9 @@ public class MovementController {
             if (Objects.equals(key, "Player")){
                 updateCameraCoordinates((int) (axisMap.get(key).getX() * speeds.get(key)), 0);
             }
+            if (followPlayer){
+                updateCameraCoordinates(coordinatesController.getCoordinates("Player"));
+            }
         }
         for (String key : stateMapY.keySet()){
             MovementState state = stateMapY.get(key);
@@ -157,6 +168,9 @@ public class MovementController {
             moveY(key);
             if (Objects.equals(key, "Player")){
                 updateCameraCoordinates(0, (int) (axisMap.get(key).getY() * speeds.get(key)));
+            }
+            if (followPlayer){
+                updateCameraCoordinates(coordinatesController.getCoordinates("Player"));
             }
         }
 
@@ -210,7 +224,27 @@ public class MovementController {
         coordinatesController.updateMainCoordinates(addX, addY);
     }
 
+    public void updateCameraCoordinates(Vertex coordinates){
+        coordinatesController.updateMainCoordinates(coordinates);
+    }
+
     public void setCollisionController(CollisionController collisionController) {
         this.collisionController = collisionController;
+    }
+
+    public void followPlayer(){
+        this.followPlayer = true;
+    }
+
+    public void stopFollowingPlayer(){
+        this.followPlayer = false;
+    }
+
+    public void switchFollowPlayer(){
+        this.followPlayer = !followPlayer;
+    }
+
+    public void switchAllowPlayerMovement(){
+        this.allowPlayerMovement = !allowPlayerMovement;
     }
 }

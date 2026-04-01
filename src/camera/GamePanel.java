@@ -16,6 +16,7 @@ public class GamePanel extends AnimatedBackground {
     private CollisionBatch collisionBatch;
     private GameObjectBatch gameObjectBatch;
     private boolean isBackgroundAnimationAvailable = false;
+    private boolean drawCollisions = true;
 
     public GamePanel() {
         uiBatch = new UIBatch(null);
@@ -39,9 +40,11 @@ public class GamePanel extends AnimatedBackground {
         if (!(gameObjectBatch.isControllerNull())){
             gameObjectBatch.drawAllObjects(g, GameController.getImageController());
         }
-        collisionBatch.linkToCoordinatesController();
-        if (!(collisionBatch.isControllerNull())) {
-            collisionBatch.drawCollisions(g);
+        if (drawCollisions) {
+            collisionBatch.linkToCoordinatesController();
+            if (!(collisionBatch.isControllerNull())) {
+                collisionBatch.drawCollisions(g);
+            }
         }
         if (uiBatch.isUiControllerNull()){
             return;
@@ -77,5 +80,9 @@ public class GamePanel extends AnimatedBackground {
         if (animation == null){
             isBackgroundAnimationAvailable = false;
         }
+    }
+
+    public void toggleDrawCollisions(boolean value){
+        drawCollisions = value;
     }
 }
