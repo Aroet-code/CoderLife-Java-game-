@@ -259,7 +259,7 @@ public class SceneBuilder {
                     GameObjectCreator.createRestrictedArea(collisionController, GameController.getGameObjectCoordinatesController(),
                             new Vertex(200, 200), 100, 100);
                     GameObjectCreator.createAllowedArea(collisionController, GameController.getGameObjectCoordinatesController(),
-                            new Vertex(500, 500), 500, 500);
+                            new Vertex(500, 500), 800, 800);
                 }
             }
             scenes.put(scene, new GameObjectScene(collisionController, gameObjectController, interactionController, animationController,

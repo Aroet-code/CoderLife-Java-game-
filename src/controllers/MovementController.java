@@ -88,13 +88,20 @@ public class MovementController {
         Vertex oldCoordinate = coordinatesController.getCoordinates(key);
         Vertex newCoordinates = new Vertex((int) (coordinatesController.getCoordinates(key).getX() + (speeds.get(key) * axisMap.get(key).getX())),
                 (int) (coordinatesController.getCoordinates(key).getY()));
-        coordinatesController.updateCoordinates(key, newCoordinates);
-        if (!(collisionController.isPositionPossible("Player"))){
+        Vertex checkCoordinates = new Vertex((int) (coordinatesController.getCoordinates(key).getX() + (speeds.get(key) * axisMap.get(key).getX())),
+                (int) (coordinatesController.getCoordinates(key).getY()));
+        coordinatesController.updateCoordinates(key, checkCoordinates);
+        collisionController.updateCoordinates(key, checkCoordinates);
+        if ((collisionController.isPositionPossible("Player"))){
 //            axisMap.get(key).setX(0);
 //            stateMapX.replace(key, MovementState.STILL);
 //            System.out.println("Old coordinate x: " + oldCoordinate.getX() + " old coordinate y: " + oldCoordinate.getY());
 //            System.out.println("New coordinate x: " + newCoordinates.getX() + " new coordinate y: " + newCoordinates.getY());
+            coordinatesController.updateCoordinates(key, newCoordinates);
+            collisionController.updateCoordinates(key, newCoordinates);
+        } else {
             coordinatesController.updateCoordinates(key, oldCoordinate);
+            collisionController.updateCoordinates(key, oldCoordinate);
         }
     }
 
@@ -102,11 +109,20 @@ public class MovementController {
         Vertex oldCoordinate = coordinatesController.getCoordinates(key);
         Vertex newCoordinates = new Vertex((int) (coordinatesController.getCoordinates(key).getX()),
                 (int) (coordinatesController.getCoordinates(key).getY() + (speeds.get(key) * axisMap.get(key).getY())));
+        Vertex checkCoordinates = new Vertex((int) (coordinatesController.getCoordinates(key).getX()),
+                (int) (coordinatesController.getCoordinates(key).getY() + (speeds.get(key) * axisMap.get(key).getY())));
         coordinatesController.updateCoordinates(key, newCoordinates);
-        if (!(collisionController.isPositionPossible("Player"))){
+        collisionController.updateCoordinates(key, checkCoordinates);
+        if ((collisionController.isPositionPossible("Player"))){
 //            axisMap.get(key).setY(0);
-//            stateMapY.replace(key, MovementState.STILL);
+//            stateMapX.replace(key, MovementState.STILL);
+//            System.out.println("Old coordinate x: " + oldCoordinate.getX() + " old coordinate y: " + oldCoordinate.getY());
+//            System.out.println("New coordinate x: " + newCoordinates.getX() + " new coordinate y: " + newCoordinates.getY());
+            coordinatesController.updateCoordinates(key, newCoordinates);
+            collisionController.updateCoordinates(key, newCoordinates);
+        } else {
             coordinatesController.updateCoordinates(key, oldCoordinate);
+            collisionController.updateCoordinates(key, oldCoordinate);
         }
     }
 

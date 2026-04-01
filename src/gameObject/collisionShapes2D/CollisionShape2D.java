@@ -8,4 +8,5 @@ public interface CollisionShape2D {
     int getWidth();
     int getHeight();
     Vertex[] getPoints();
+    CollisionShape2D clone();
 }

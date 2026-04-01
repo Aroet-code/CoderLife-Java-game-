@@ -91,16 +91,16 @@ public class Screen extends JFrame {
     }
 
     public Screen() {
-//        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-//        if (gd.isFullScreenSupported()){
-//            this.setUndecorated(true);
-//            gd.setFullScreenWindow(this);
-//        } else {
-//            this.setExtendedState(MAXIMIZED_BOTH);
-//            this.setUndecorated(true);
-//        }
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        if (gd.isFullScreenSupported()){
+            this.setUndecorated(true);
+            gd.setFullScreenWindow(this);
+        } else {
+            this.setExtendedState(MAXIMIZED_BOTH);
+            this.setUndecorated(true);
+        }
         setVisible(true);
-        setSize(1000, 600);
+//        setSize(1000, 600);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gamePanel = new GamePanel();

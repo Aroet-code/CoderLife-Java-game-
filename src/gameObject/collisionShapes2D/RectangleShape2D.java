@@ -100,4 +100,9 @@ public class RectangleShape2D implements CollisionShape2D {
     public Vertex[] getPoints(){
         return points;
     }
+
+    @Override
+    public CollisionShape2D clone() {
+        return new RectangleShape2D(this.centerCoordinate, width, height);
+    }
 }
