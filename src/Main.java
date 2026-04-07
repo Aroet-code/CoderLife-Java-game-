@@ -1,8 +1,9 @@
-import camera.Resolution;
 import camera.Screen;
 import gameObject.collisionShapes2D.Vertex;
+import gameObject.image.GameObjectImagePackage;
 import sounds.AdvancedAudioManager;
 import threads.*;
+import ui.BackgroundAnimationCreator;
 import util.*;
 
 import javax.swing.*;
@@ -36,7 +37,9 @@ public class Main {
         GameController.getGameObjectCoordinatesController().updateMainCoordinates(new Vertex(600, 530));
 
         InputCommandsManager.createCommands();
-        
+
+        GameController.getImageController().addImagePackage("Interaction arrow", new GameObjectImagePackage(null, new ImageIcon("assets/images/additional/interactionArrow.png").getImage(),
+                null));
 //        screen.add(ObjCreator.camera);
 //        ObjCreator.notificator.subscribe(ObjCreator.camera);
 //        screen.addKeyListener(new Mover());

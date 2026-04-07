@@ -9,6 +9,7 @@ import util.GameController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class GameObjectCreator {
@@ -60,6 +61,10 @@ public class GameObjectCreator {
             for (int i = 0; i < animationImages.length; i++){
                 animationImages[i] = new ImageIcon(folderPath + "/animation/" + (i + 1) + ".png").getImage();
             }
+        }
+        if (defaultImage == null){
+            defaultImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+            System.out.println("Warning: an empty default image for: " + name);
         }
         GameObjectImagePackage pkg = new GameObjectImagePackage(animationImages, defaultImage, finalImage);
         if (animationFolder.exists()){

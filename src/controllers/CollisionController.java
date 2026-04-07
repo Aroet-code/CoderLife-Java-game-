@@ -1,6 +1,7 @@
 package controllers;
 
 import gameObject.collisionShapes2D.*;
+import util.GameController;
 
 import java.util.*;
 
@@ -57,6 +58,9 @@ public class CollisionController {
     public ArrayList<String> checkCollisions(String key) {
         CollisionShape2D mainCollision = collisions.get(key);
         if (mainCollision == null){
+            if (GameController.getScreen().getGamePanel().getAnimation() == null){
+                return null;
+            }
             System.out.println("The main collision in CollisionController == null");
         }
         ArrayList<String> collidedWith = new ArrayList<>();

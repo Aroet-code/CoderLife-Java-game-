@@ -2,6 +2,7 @@ package util;
 
 import gameObject.movement.MovementCommand;
 import gameObject.movement.MovementCommandPackage;
+import ui.BackgroundAnimationCreator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +29,8 @@ public class InputCommandsManager {
     public static void createCommands(){
         commands = new HashMap<>();
         Callable<Integer> startGame = () -> {
-            GameController.getSceneManager().changeScene(GameController.getScreen(), "MAIN_GAME");
-            GameController.getScreen().getGamePanel().setAnimation(null);
+//            GameController.getSceneManager().changeScene(GameController.getScreen(), "MAIN_GAME");
+            GameController.getScreen().getGamePanel().setAnimation(BackgroundAnimationCreator.additionalAnimation);
             GameController.getGameThreadController().enableThread("GAMEOBJECT_ANIMATION");
             GameController.getGameThreadController().enableThread("SCENE_INTERACTIONS_MAIN");
             GameController.getGameThreadController().enableThread("IMAGE_RENDER");

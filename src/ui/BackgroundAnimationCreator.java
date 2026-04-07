@@ -1,7 +1,7 @@
-package util;
+package ui;
 
 import camera.Screen;
-import ui.*;
+import util.GameController;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,11 +12,54 @@ import java.util.concurrent.Callable;
 
 public class BackgroundAnimationCreator {
     private static final List<AnimationObject> objects = new ArrayList<>();
+    private static final List<AnimationObject> objects1 = new ArrayList<>();
     private static final Screen screen = GameController.getScreen();
 
     public static void create(){
         BackgroundAnimationCreator.addObjects(objects);
+        BackgroundAnimationCreator.addObjects1(objects1);
     }
+
+    public static BackgroundAnimation additionalAnimation = new BackgroundAnimation(new Callable<Image>() {
+        @Override
+        public Image call() throws Exception {
+            int width, height;
+            width = screen.getWidth();
+            height = screen.getHeight();
+
+            BufferedImage finalImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = finalImage.createGraphics();
+            g.setColor(new Color(0, 0, 0));
+            g.fillRect(0, 0, width, height);
+
+            synchronized (objects1){
+                for (AnimationObject animationObject : objects1){
+                    if (animationObject instanceof AnimationTickTimer){
+                        AnimationTickTimer timer = (AnimationTickTimer) animationObject;
+                        timer.increaseTick();
+                        switch (timer.id){
+                            case 0 -> {
+                                if (!(timer.isTickReached())){
+                                    g.setColor(Color.WHITE);
+                                    int tick = timer.getTick();
+                                    int ovalWidth = (int) (tick * (width / 100) * timer.getCompletionState());
+                                    int ovalHeight = (int) (tick * (height / 100) * timer.getCompletionState());
+                                    g.fillOval(width / 2 - ovalWidth / 2, height / 2 - ovalHeight / 2, ovalWidth, ovalHeight);
+                                } else {
+                                    GameController.getSceneManager().changeScene(GameController.getScreen(), "MAIN_GAME");
+                                    timer.reset();
+                                    timer.disable();
+                                    GameController.getScreen().getGamePanel().setAnimation(null);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return finalImage;
+        }
+    }, objects1);
 
     public static BackgroundAnimation mainMenuAnimation =  new BackgroundAnimation(new Callable<Image>() {
         @Override
@@ -128,6 +171,12 @@ public class BackgroundAnimationCreator {
             objects.add(new AnimatedLabel(500, 2800, 500, 50, "PRESS <ENTER> TO START", new Font("Arial", Font.ITALIC, 32), new Color(0.30f, 0.65f , 1.00f, 1f)));
             objects.add(new LightLine(100, 5, screen.getHeight(), 0.02f, new Color(0.30f, 0.65f , 1.00f, 1f)));
 //            objects.add(new LightLine(500, 10, screen.getHeight(), 0.015f, new Color(0.30f, 0.65f , 1.00f, 1f)));
+        }
+    }
+
+    public static void addObjects1(List<AnimationObject> objects1){
+        synchronized (objects1) {
+            objects1.add(new AnimationTickTimer(240, 0));
         }
     }
 }

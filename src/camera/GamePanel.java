@@ -39,6 +39,7 @@ public class GamePanel extends AnimatedBackground {
         }
         if (!(gameObjectBatch.isControllerNull())){
             gameObjectBatch.drawAllObjects(g, GameController.getImageController());
+            gameObjectBatch.drawInteractionArrows(g, GameController.getImageController());
         }
         if (drawCollisions) {
             collisionBatch.linkToCoordinatesController();

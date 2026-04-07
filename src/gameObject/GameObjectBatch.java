@@ -3,6 +3,7 @@ package gameObject;
 import controllers.GameObjectController;
 import controllers.GameObjectCoordinatesController;
 import controllers.ImageController;
+import gameObject.collisionShapes2D.CollisionState;
 import gameObject.collisionShapes2D.Vertex;
 import gameObject.image.DrawObject;
 import gameObject.image.ImageScaler;
@@ -77,6 +78,26 @@ public class GameObjectBatch {
         String[] keys = gameObjectController.getKeys();
         for (String key : keys){
             drawObject(g, key, imageObserver);
+        }
+    }
+
+    public void drawInteractionArrows(Graphics g, ImageObserver imageObserver){
+        Image image = imageController.getRenderedImage("Interaction arrow");
+        for (String key : gameObjectController.getKeys()){
+            CollisionState state = gameObjectController.getCollisionController().getObjectCollisionState(key);
+            if (state != CollisionState.HOVER){
+                continue;
+            }
+            GameObjectState gameObjectState = imageController.getState(key);
+            if (gameObjectState != GameObjectState.DEFAULT){
+                continue;
+            }
+            int width = image.getWidth(imageObserver);
+            int height = image.getHeight(imageObserver);
+            Vertex coordinates = gameObjectCoordinatesController.getActualDrawingCoordinates(key, imageScaler.getImageScalingMultiplier());
+            coordinates.setY(coordinates.getY() - height / 2);
+            g.drawImage(image, (GameController.getScreen().getWidth() / 2) + coordinates.getX() - (width / 2),
+                    (GameController.getScreen().getHeight() / 2) + coordinates.getY() - (height /2 ), imageObserver);
         }
     }
 }

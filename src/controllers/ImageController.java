@@ -181,4 +181,8 @@ public class ImageController implements ImageObserver {
     public void changeState(String key, GameObjectState state){
         states.replace(key, state);
     }
+
+    public GameObjectState getState(String key){
+        return states.get(key);
+    }
 }
