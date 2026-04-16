@@ -132,6 +132,7 @@ public class Screen extends JFrame {
 
     public void displayUIScene(UIScene uiScene) {
         gamePanel.setUIController(uiScene.uiController());
+        GameController.getUiCommandsManager().setUiController(uiScene.uiController());
         this.setUILinker(uiScene.uiUserLinker());
     }
 

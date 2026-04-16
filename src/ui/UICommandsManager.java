@@ -51,6 +51,7 @@ public class UICommandsManager {
     }
 
     public void updateCommand(String key, String commandName) throws Exception{
+//        System.out.println("Trying to update command for " + key + ": to " + commandName);
         UIElement element = uiController.getElement(key);
         Callable<Integer> command = commands.get(commandName);
         element.setCommand(command);

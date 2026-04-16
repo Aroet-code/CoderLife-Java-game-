@@ -1,5 +1,7 @@
 package util;
 
+import gameObject.animation.AnimationCommandFlag;
+import gameObject.animation.AnimationUpdateCommand;
 import gameObject.movement.MovementCommand;
 import gameObject.movement.MovementCommandPackage;
 import ui.BackgroundAnimationCreator;
@@ -48,6 +50,7 @@ public class InputCommandsManager {
         commands.put("BACK_TO_MAIN_MENU", backToMainMenu);
         Callable<Integer> moveRight = () -> {
             GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.START_MOVING_RIGHT));
+            GameController.getAnimationController().executeCommand(new AnimationUpdateCommand("Player", AnimationCommandFlag.ANIMATE));
             return 0;
         };
         commands.put("MOVE_RIGHT", moveRight);
@@ -73,6 +76,7 @@ public class InputCommandsManager {
         commands.put("STOP_MOVING_X", stopMovingX);
         Callable<Integer> stopMovingY = () -> {
             GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.STOP_Y));
+            GameController.getAnimationController().executeCommand(new AnimationUpdateCommand("Player", AnimationCommandFlag.STOP_ANIMATING));
             return 0;
         };
         commands.put("STOP_MOVING_Y", stopMovingY);
