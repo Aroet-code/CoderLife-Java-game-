@@ -1,12 +1,14 @@
 import camera.Screen;
 import gameObject.collisionShapes2D.Vertex;
 import gameObject.image.GameObjectImagePackage;
+import minigames.maze.*;
 import sounds.AdvancedAudioManager;
 import threads.*;
 import ui.BackgroundAnimationCreator;
 import util.*;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Main {
     public static Screen screen;
@@ -55,5 +57,23 @@ public class Main {
 //        ObjCreator.uiAnimationThread.run();
 
         GameController.getGameThreadController().runThreads();
+
+        MazeMap mazeMap = new MazeMap(30, 30);
+//
+//        mazeMap.updateTile(new Point(4, 4), TileType.DESTRUCTIBLE_WALL);
+//        mazeMap.updateTile(new Point(5, 4), TileType.DESTRUCTIBLE_WALL);
+//        mazeMap.updateTile(new Point(6, 4), TileType.DESTRUCTIBLE_WALL);
+//        mazeMap.updateTile(new Point(7, 4), TileType.DESTRUCTIBLE_WALL);
+//        mazeMap.updateTile(new Point(8, 4), TileType.DESTRUCTIBLE_WALL);
+//
+//        mazeMap.consoleLogMap();
+//
+//        CoordinatesController coordinatesController = new CoordinatesController();
+//        coordinatesController.addCoordinates("Bomb", new Point(5, 5));
+//
+//        MazeCommandsExecutor mazeCommandsExecutor = new MazeCommandsExecutor(coordinatesController, mazeMap);
+//        mazeCommandsExecutor.executeCommand(new ItemUsePackage("Bomb", 0, new ItemUseFlags[]{ItemUseFlags.REMOVE_DESTRUCTIBLE_WALLS}, UseTypeFlags.EXECUTE_RAD_2));
+//
+//        mazeMap.consoleLogMap();
     }
 }
