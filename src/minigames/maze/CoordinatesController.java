@@ -45,4 +45,8 @@ public class CoordinatesController {
         }
         return result;
     }
+
+    protected Point getCoordinates(String key){
+        return coordinates.get(key);
+    }
 }

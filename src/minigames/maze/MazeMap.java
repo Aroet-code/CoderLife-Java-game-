@@ -12,17 +12,17 @@ public class MazeMap {
     private List<Room> rooms = new ArrayList<>();
     int width, height;
 
-    public MazeMap(int width, int height) {
-        createMaze(width, height);
-    }
-
-    private void createMaze(int width, int height){
+    public MazeMap(int width, int height, int roomCount, int roomSizeMin, int roomSizeMax) {
         this.width = width;
         this.height = height;
+        createMap(roomCount, roomSizeMin, roomSizeMax);
+    }
+
+    private void createMap(int roomCount, int roomSizeMin, int roomSizeMax){
         createBase(width, height);
         System.out.println("Creating map step 1");
         consoleLogMap();
-        createRooms();
+        createRooms(roomCount, roomSizeMin, roomSizeMax);
         System.out.println("Creating map step 2");
         consoleLogMap();
         createFloor();
@@ -66,12 +66,12 @@ public class MazeMap {
 //        }
     }
 
-    private void createRooms(){
+    private void createRooms(int roomCount, int minSize, int maxSize){
 //        Point startPos = new Point(random.nextInt(3, map[0].length - 1), random.nextInt(3, map[0].length - 1));
-        for (int i = 0; i < 8; i++){
-            int w = random.nextInt(5, 9);
-            int h = random.nextInt(5, 9);
-            Point pos = new Point(random.nextInt(3, map[0].length - 9), random.nextInt(3, map[0].length - 9));
+        for (int i = 0; i < roomCount; i++){
+            int w = random.nextInt(minSize, maxSize);
+            int h = random.nextInt(minSize, maxSize);
+            Point pos = new Point(random.nextInt(3, map[0].length - maxSize), random.nextInt(3, map[0].length - maxSize));
             Room r = new Room(w, h, pos);
             rooms.add(r);
         }
@@ -254,5 +254,18 @@ public class MazeMap {
 
     public void updateTile(Point p, TileType tileType){
         map[p.y][p.x] = tileType.ordinal();
+    }
+
+    public List<Point> getPossibleSpawns(){
+        List<Point> result = new ArrayList<>();
+        for (Room room : rooms){
+            Point rPos = room.getPoint();
+            for (int i = 0; i < 3; i++) {
+                Point newPos = new Point((int) (rPos.getX() + random.nextInt(1, room.getWidth() - 2)),
+                        (int) (rPos.getY() + random.nextInt(1, room.getHeight() - 2)));
+                result.add(newPos);
+            }
+        }
+        return result;
     }
 }

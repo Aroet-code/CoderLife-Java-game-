@@ -58,7 +58,11 @@ public class Main {
 
         GameController.getGameThreadController().runThreads();
 
-        MazeMap mazeMap = new MazeMap(30, 30);
+//        MazeMap mazeMap = new MazeMap(40, 40, 8, 5, 9);
+        MazeController mazeController = new MazeController();
+        mazeController.createMap(40, 40, 8, 5, 9);
+        MazeImageCreator mazeImageCreator = new MazeImageCreator(mazeController);
+        mazeImageCreator.getImage(640, 640);
 //
 //        mazeMap.updateTile(new Point(4, 4), TileType.DESTRUCTIBLE_WALL);
 //        mazeMap.updateTile(new Point(5, 4), TileType.DESTRUCTIBLE_WALL);
