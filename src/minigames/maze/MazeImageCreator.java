@@ -27,7 +27,7 @@ public class MazeImageCreator extends ImageCreator {
 
         int[][] map = mm.getMap();
 
-        Point playerCoordinates = cc.getCoordinates("Player");
+        Point playerCoordinates = cc.getCoordinates("player");
 
         Graphics2D g = resultImage.createGraphics();
         g.setColor(Color.BLACK);
