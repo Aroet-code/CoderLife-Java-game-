@@ -2,6 +2,8 @@ package controllers;
 
 import gameObject.GameObjectState;
 import gameObject.image.*;
+import gameObject.movement.Direction;
+import gameObject.movement.SetDirectionCommand;
 import util.GameController;
 
 import javax.swing.*;
@@ -24,6 +26,7 @@ public class ImageController implements ImageObserver {
     private Map<String, Integer> frameNumbers = new HashMap<>();
     private Map<String, GameObjectImagePackage> images = new HashMap<>();
     private Map<String, GameObjectImagePackage> scaledImages = new HashMap<>();
+
 //    private Map<String, DrawObject> drawObjects = new HashMap<>();
 //    private Map<String, DrawObject> renderedDrawObjects = new HashMap<>();
 //    private final ImageScaler imageScaler;
@@ -61,12 +64,28 @@ public class ImageController implements ImageObserver {
 //        }
 //    }
 
+    public void executeCommand(SetDirectionCommand command){
+        String key = command.key();
+        Direction direction = command.direction();
+
+    }
+
     public int updateGameObjectImage(ImageUpdateCommand imageUpdateCommand){
         if (scaledImages.isEmpty()){
             scaledImages = new HashMap<>(images);
         }
         synchronized (renderedImages) {
             String key = imageUpdateCommand.key();
+            if (imageUpdateCommand.direction() != null){
+                switch (imageUpdateCommand.direction()){
+                    case LEFT -> {
+                        key += "-left";
+                    }
+                    case RIGHT -> {
+                        key += "-right";
+                    }
+                }
+            }
             Image image = null;
             Graphics g = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB).createGraphics();
             int returnValue = 0;
@@ -110,7 +129,7 @@ public class ImageController implements ImageObserver {
         if (renderedImages.containsKey(key)){
             return renderedImages.get(key);
         } else {
-            throw new NoImageException("The image is not rendered.");
+            throw new NoImageException("The image is not rendered. Key: " + key);
         }
     }
 
@@ -184,5 +203,9 @@ public class ImageController implements ImageObserver {
 
     public GameObjectState getState(String key){
         return states.get(key);
+    }
+
+    public void replacePackage(String key, String replaceKey){
+        images.put(key, images.get(replaceKey));
     }
 }

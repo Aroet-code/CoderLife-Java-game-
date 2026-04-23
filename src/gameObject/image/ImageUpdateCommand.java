@@ -1,4 +1,6 @@
 package gameObject.image;
 
-public record ImageUpdateCommand(String key, AnimationFlags flag) {
+import gameObject.movement.Direction;
+
+public record ImageUpdateCommand(String key, AnimationFlags flag, Direction direction) {
 }

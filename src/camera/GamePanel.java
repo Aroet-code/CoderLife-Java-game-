@@ -2,6 +2,7 @@ package camera;
 
 import controllers.*;
 import gameObject.GameObjectBatch;
+import minigames.core.ImageCreator;
 import ui.AnimatedBackground;
 import ui.BackgroundAnimation;
 import ui.UIBatch;
@@ -12,9 +13,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends AnimatedBackground {
+    private static int minigameWidth = 640;
+    private static int minigameHeight = 640;
     private UIBatch uiBatch;
     private CollisionBatch collisionBatch;
     private GameObjectBatch gameObjectBatch;
+    private ImageCreator miniGamesImageCreator;
     private boolean isBackgroundAnimationAvailable = false;
     private boolean drawCollisions = true;
 
@@ -46,6 +50,10 @@ public class GamePanel extends AnimatedBackground {
             if (!(collisionBatch.isControllerNull())) {
                 collisionBatch.drawCollisions(g);
             }
+        }
+        if (miniGamesImageCreator != null) {
+            Image img = miniGamesImageCreator.getImage(minigameWidth, minigameHeight);
+            g.drawImage(img, getWidth() / 2 - (minigameWidth / 2), getHeight() / 2 - (minigameHeight / 2), null);
         }
         if (uiBatch.isUiControllerNull()){
             return;
@@ -85,5 +93,9 @@ public class GamePanel extends AnimatedBackground {
 
     public void toggleDrawCollisions(boolean value){
         drawCollisions = value;
+    }
+
+    public void setMiniGamesImageCreator(ImageCreator miniGamesImageCreator) {
+        this.miniGamesImageCreator = miniGamesImageCreator;
     }
 }

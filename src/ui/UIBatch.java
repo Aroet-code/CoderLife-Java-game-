@@ -28,6 +28,9 @@ public class UIBatch {
         }
         for (String name : elementNames){
             UIElement element = null;
+            if (uiController.getElementHiddenState(name)){
+                continue;
+            }
             try {
                 element = uiController.getElement(name);
             } catch (Exception e) {

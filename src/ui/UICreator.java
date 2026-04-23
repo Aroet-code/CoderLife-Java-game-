@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class UICreator {
     private boolean busy = false;
@@ -94,7 +95,7 @@ public class UICreator {
     }
 
     public static void createUIElement(UIController uiController, UIAnimationController uiAnimationController, UICommandsManager commandsManager,
-                                       String name, String command, HashMap<UIElementState, Image> stateImages, Image[] animationImages,
+                                       String name, String command, Map<UIElementState, Image> stateImages, Image[] animationImages,
                                        int startX, int startY, int targetX, int targetY, String[] children, String[] tags){
         commandsManager.setUiController(uiController);
         commandsManager.setUiAnimationController(uiAnimationController);

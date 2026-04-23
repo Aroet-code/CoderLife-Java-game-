@@ -3,8 +3,7 @@ package sounds;
 import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,6 +11,8 @@ import java.util.concurrent.Executors;
 public class AdvancedAudioManager {
     private static AdvancedAudioManager instance;
     private final ExecutorService audioExecutor;
+    private final Map<String, List<String>> soundTracks = new HashMap<>();
+    private final Map<String, String> filepaths = new HashMap<>();
     private Clip backgroundMusic;
     private final Map<String, byte[]> soundCache;
     private float masterVolume = 1.0f;
@@ -95,7 +96,17 @@ public class AdvancedAudioManager {
         });
     }
 
-    public void playBackgroundMusic(String filepath){
+    public void playBackgroundMusic(Queue<String> musicQueue, String scene){
+        if (musicQueue == null){
+            musicQueue = new LinkedList<>(soundTracks.get(scene));
+        }
+        String key = musicQueue.poll();
+        if (key == null) {
+            musicQueue = new LinkedList<>(soundTracks.get(scene));
+            key = musicQueue.poll();
+        }
+        String filepath = filepaths.get(key);
+        Queue<String> finalMusicQueue = musicQueue;
         audioExecutor.submit(() -> {
             try {
                 stopBackgroundMusic();
@@ -104,7 +115,14 @@ public class AdvancedAudioManager {
                 backgroundMusic = AudioSystem.getClip();
                 backgroundMusic.open(audioStream);
                 setClipVolume(backgroundMusic, masterVolume);
-                backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
+                backgroundMusic.addLineListener(event -> {
+                    if (event.getType() == LineEvent.Type.STOP && !backgroundMusic.isRunning()) {
+                        if (!(finalMusicQueue.isEmpty())){
+                            audioExecutor.submit(() -> playBackgroundMusic(finalMusicQueue, scene));
+                        }
+                    }
+                });
+                backgroundMusic.start();
             } catch (Exception e) {
                 System.err.println("Error while handling playing background music: " + e.getMessage());
             }
@@ -144,5 +162,12 @@ public class AdvancedAudioManager {
             backgroundMusic.close();
         }
         audioExecutor.shutdown();
+    }
+
+    public void loadSongs(){
+        filepaths.put("Theme 1", "assets/sounds/music/Untitled song.wav");
+        List<String> mainGameSongs = new ArrayList<>();
+        mainGameSongs.add("Theme 1");
+        soundTracks.put("MAIN_GAME", mainGameSongs);
     }
 }

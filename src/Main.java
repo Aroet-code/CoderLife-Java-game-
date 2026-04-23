@@ -16,12 +16,14 @@ public class Main {
     public static void main(String[] args) throws Exception {
 //        ScreenPanel panel = new ScreenPanel();
         AdvancedAudioManager audioManager = new AdvancedAudioManager();
-        audioManager.playBackgroundMusic("assets/sounds/music/Untitled song.wav");
+        audioManager.loadSongs();
+        audioManager.playBackgroundMusic(null, "MAIN_GAME");
         screen = new Screen();
         GameController.setScreen(screen);
         SceneManager.setGameObjectScenes(SceneBuilder.buildGameObjectScenes());
         GameController.getGameThreadController().addThread("UI_MAIN", new UIThread());
         SceneManager.setUiScenes(SceneBuilder.buildUIScenes(screen));
+        SceneManager.setMinigameScenes(SceneBuilder.buildMinigameScenes());
         screen.displayUIScene(SceneManager.getUIScene("MAIN_MENU"));
         screen.displayGameObjectScene(SceneManager.getGameObjectScene("MAIN_MENU"));
         screen.getGamePanel().setImageController(GameController.getImageController());
@@ -59,10 +61,10 @@ public class Main {
         GameController.getGameThreadController().runThreads();
 
 //        MazeMap mazeMap = new MazeMap(40, 40, 8, 5, 9);
-        MazeController mazeController = new MazeController();
-        mazeController.createMap(40, 40, 8, 5, 9);
-        MazeImageCreator mazeImageCreator = new MazeImageCreator(mazeController);
-        mazeImageCreator.getImage(640, 640);
+//        MazeController mazeController = new MazeController();
+//        mazeController.createMap(40, 40, 8, 5, 9);
+//        MazeImageCreator mazeImageCreator = new MazeImageCreator(mazeController);
+//        mazeImageCreator.getImage(640, 640);
 //
 //        mazeMap.updateTile(new Point(4, 4), TileType.DESTRUCTIBLE_WALL);
 //        mazeMap.updateTile(new Point(5, 4), TileType.DESTRUCTIBLE_WALL);

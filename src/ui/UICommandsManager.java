@@ -38,6 +38,10 @@ public class UICommandsManager {
         commandsManager.updateCommand("Keybinds button", "OpenKeybindsMenu");
         return 0;
     };
+    Callable<Integer> flipUIHideSwitch = () -> {
+        uiController.flipAllElement(new String[]{"Root", "Show hide UI switch"});
+        return 0;
+    };
     Callable<Integer> turnSwitch = () -> {
         return 0;
     };
@@ -48,6 +52,7 @@ public class UICommandsManager {
         commands.put("TurnSwitch", turnSwitch);
         commands.put("OpenKeybindsMenu", openKeybindsMenu);
         commands.put("CloseKeybindsMenu", closeKeybindsMenu);
+        commands.put("flipShowUISwitch", flipUIHideSwitch);
     }
 
     public void updateCommand(String key, String commandName) throws Exception{

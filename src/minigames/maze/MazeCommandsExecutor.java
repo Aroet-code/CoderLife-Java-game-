@@ -38,9 +38,22 @@ public class MazeCommandsExecutor {
         for (ItemUseFlags flag : itemUseFlags){
             switch (flag){
                 case REMOVE_DESTRUCTIBLE_WALLS -> {
+                    assert executionCoordinates != null;
                     for (Point p : executionCoordinates){
                         if (mazeMap.getMap()[p.y][p.x] == TileType.DESTRUCTIBLE_WALL.ordinal()){
                             mazeMap.updateTile(p, TileType.FLOOR);
+                        }
+                    }
+                }
+                case DEAL_DAMAGE -> {
+                    assert executionCoordinates != null;
+                    for (Point p : executionCoordinates) {
+                        String[] keys = coordinatesController.isOnCoordinates(p);
+                        if (keys == null){
+                            continue;
+                        }
+                        for (String obj : keys){
+                            coordinatesController.removeObject(obj);
                         }
                     }
                 }

@@ -27,6 +27,10 @@ public class ImageController {
         return new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
     }
 
+    public Image getOneOfTheImages(String key, int id){
+        return images.get(key+ "-" + id);
+    }
+
     public void preloadImage(String key, String path){
         Image img = new ImageIcon(path).getImage();
         addImage(key, img);

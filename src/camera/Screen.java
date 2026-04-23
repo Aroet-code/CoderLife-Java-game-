@@ -1,6 +1,8 @@
 package camera;
 
 import gameObject.GameObjectScene;
+import minigames.core.MinigameScene;
+import minigames.maze.CoordinatesController;
 import ui.UIScene;
 import ui.UIUserLinker;
 import util.GameController;
@@ -91,16 +93,16 @@ public class Screen extends JFrame {
     }
 
     public Screen() {
-//        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-//        if (gd.isFullScreenSupported()){
-//            this.setUndecorated(true);
-//            gd.setFullScreenWindow(this);
-//        } else {
-//            this.setExtendedState(MAXIMIZED_BOTH);
-//            this.setUndecorated(true);
-//        }
-//        setVisible(true);
-        setSize(1000, 600);
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        if (gd.isFullScreenSupported()){
+            this.setUndecorated(true);
+            gd.setFullScreenWindow(this);
+        } else {
+            this.setExtendedState(MAXIMIZED_BOTH);
+            this.setUndecorated(true);
+        }
+        setVisible(true);
+//        setSize(1000, 600);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gamePanel = new GamePanel();
@@ -143,6 +145,10 @@ public class Screen extends JFrame {
         gamePanel.setActionMap(gameObjectScene.actionMap());
         GameController.getMovementController().setCollisionController(gameObjectScene.collisionController());
         GameController.getImageController().renderImages();
+    }
+
+    public void displayMinigameScene(MinigameScene minigameScene) {
+        gamePanel.setMiniGamesImageCreator(minigameScene.imageCreator());
     }
 
     public GamePanel getGamePanel() {

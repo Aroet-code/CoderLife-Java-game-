@@ -2,8 +2,10 @@ package util;
 
 import gameObject.animation.AnimationCommandFlag;
 import gameObject.animation.AnimationUpdateCommand;
+import gameObject.movement.Direction;
 import gameObject.movement.MovementCommand;
 import gameObject.movement.MovementCommandPackage;
+import gameObject.movement.SetDirectionCommand;
 import ui.BackgroundAnimationCreator;
 
 import java.util.HashMap;
@@ -51,32 +53,39 @@ public class InputCommandsManager {
         Callable<Integer> moveRight = () -> {
             GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.START_MOVING_RIGHT));
             GameController.getAnimationController().executeCommand(new AnimationUpdateCommand("Player", AnimationCommandFlag.ANIMATE));
+            GameController.getAnimationController().executeCommand(new SetDirectionCommand("Player", Direction.RIGHT));
+            GameController.getMinigameMovementController().move("player", Direction.RIGHT);
             return 0;
         };
         commands.put("MOVE_RIGHT", moveRight);
         Callable<Integer> moveLeft = () -> {
             GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.START_MOVING_LEFT));
+            GameController.getAnimationController().executeCommand(new AnimationUpdateCommand("Player", AnimationCommandFlag.ANIMATE));
+            GameController.getAnimationController().executeCommand(new SetDirectionCommand("Player", Direction.LEFT));
+            GameController.getMinigameMovementController().move("player", Direction.LEFT);
             return 0;
         };
         commands.put("MOVE_LEFT", moveLeft);
         Callable<Integer> moveDown = () -> {
             GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.START_MOVING_DOWN));
+            GameController.getMinigameMovementController().move("player", Direction.DOWN);
             return 0;
         };
         commands.put("MOVE_DOWN", moveDown);
         Callable<Integer> moveUp = () -> {
             GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.START_MOVING_UP));
+            GameController.getMinigameMovementController().move("player", Direction.UP);
             return 0;
         };
         commands.put("MOVE_UP", moveUp);
         Callable<Integer> stopMovingX = () -> {
             GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.STOP_X));
+//            GameController.getAnimationController().executeCommand(new AnimationUpdateCommand("Player", AnimationCommandFlag.STOP_ANIMATING));
             return 0;
         };
         commands.put("STOP_MOVING_X", stopMovingX);
         Callable<Integer> stopMovingY = () -> {
             GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.STOP_Y));
-            GameController.getAnimationController().executeCommand(new AnimationUpdateCommand("Player", AnimationCommandFlag.STOP_ANIMATING));
             return 0;
         };
         commands.put("STOP_MOVING_Y", stopMovingY);
@@ -101,5 +110,25 @@ public class InputCommandsManager {
             return 0;
         };
         commands.put("FREE_CAMERA", switchFreeCameraMovement);
+//        Callable<Integer> minigameMoveRight = () -> {
+//
+//            return 0;
+//        };
+//        commands.put("MINIGAME_MOVE_RIGHT", minigameMoveRight);
+//        Callable<Integer> minigameMoveLeft = () -> {
+//
+//            return 0;
+//        };
+//        commands.put("MINIGAME_MOVE_LEFT", minigameMoveLeft);
+//        Callable<Integer> minigameMoveDown = () -> {
+//
+//            return 0;
+//        };
+//        commands.put("MINIGAME_MOVE_DOWN", minigameMoveDown);
+//        Callable<Integer> minigameMoveUp = () -> {
+//
+//            return 0;
+//        };
+//        commands.put("MINIGAME_MOVE_UP", minigameMoveUp);
     }
 }

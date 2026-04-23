@@ -6,6 +6,8 @@ import gameObject.animation.AnimationCommandFlag;
 import gameObject.animation.AnimationUpdateCommand;
 import gameObject.image.AnimationFlags;
 import gameObject.image.ImageUpdateCommand;
+import gameObject.movement.Direction;
+import gameObject.movement.SetDirectionCommand;
 import util.GameController;
 
 import java.util.*;
@@ -16,6 +18,7 @@ public class AnimationController {
     private static final int ANIMATION_FRAMES = 6;
     private final ImageController imageController;
     private final Queue<String> animationQueue = new ArrayDeque<>();
+    private final Map<String, Boolean> animatingLeft = new HashMap<>();
 
     public AnimationController(ImageController imageController) {
         this.imageController = imageController;
@@ -45,6 +48,19 @@ public class AnimationController {
 
     public boolean containsKey(String key){
         return animations.containsKey(key);
+    }
+
+    public void executeCommand(SetDirectionCommand command){
+        String key = command.key();
+        Direction direction = command.direction();
+        switch (direction){
+            case LEFT -> {
+                updateAnimationDirection(key, true);
+            }
+            case RIGHT -> {
+                updateAnimationDirection(key, false);
+            }
+        }
     }
 
     public void executeCommand(AnimationUpdateCommand command){
@@ -93,10 +109,18 @@ public class AnimationController {
                     boolean addElementBack = true;
                     switch (returnValue) {
                         case -1 -> {
-                            animationState = imageController.updateGameObjectImage(new ImageUpdateCommand(key, AnimationFlags.NEXT_IMAGE));
+                            Direction direction = null;
+                            if (animatingLeft.containsKey(key)){
+                                if (animatingLeft.get(key)){
+                                    direction = Direction.LEFT;
+                                } else {
+                                    direction = Direction.RIGHT;
+                                }
+                            }
+                            animationState = imageController.updateGameObjectImage(new ImageUpdateCommand(key, AnimationFlags.NEXT_IMAGE, direction));
                         }
                         case -3 -> {
-                            animationState = imageController.updateGameObjectImage(new ImageUpdateCommand(key, AnimationFlags.NEXT_IMAGE_REPEATABLE));
+                            animationState = imageController.updateGameObjectImage(new ImageUpdateCommand(key, AnimationFlags.NEXT_IMAGE_REPEATABLE, null));
                         }
                         default -> {
 
@@ -142,4 +166,8 @@ public class AnimationController {
 //            }
 //        }
 //    }
+
+    public void updateAnimationDirection(String key, boolean animatingLeft){
+        this.animatingLeft.put(key, animatingLeft);
+    }
 }

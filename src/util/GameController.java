@@ -4,6 +4,8 @@ import camera.GamePanel;
 import camera.Screen;
 import controllers.*;
 import gameObject.image.ImageScaler;
+import minigames.core.MinigameMovementController;
+import minigames.maze.CoordinatesController;
 import sounds.AdvancedAudioManager;
 import ui.UICommandsManager;
 
@@ -21,6 +23,7 @@ public class GameController {
     private static SceneManager sceneManager;
     private static ImageScaler imageScaler;
     private static MovementController movementController;
+    private static MinigameMovementController minigameMovementController;
 
     public static AnimationController getAnimationController() {
         if (animationController == null){
@@ -111,6 +114,13 @@ public class GameController {
             movementController = new MovementController(GameController.getGameObjectCoordinatesController());
         }
         return movementController;
+    }
+
+    public static MinigameMovementController getMinigameMovementController() {
+        if (minigameMovementController == null) {
+            minigameMovementController = new MinigameMovementController();
+        }
+        return minigameMovementController;
     }
 
     public static void setScreen(Screen screen){

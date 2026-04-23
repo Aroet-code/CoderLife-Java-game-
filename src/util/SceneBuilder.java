@@ -4,6 +4,12 @@ import controllers.*;
 import gameObject.GameObjectCreator;
 import gameObject.GameObjectScene;
 import gameObject.collisionShapes2D.Vertex;
+import minigames.core.ImageCreator;
+import minigames.core.MinigameController;
+import minigames.core.MinigameScene;
+import minigames.maze.MazeController;
+import minigames.maze.MazeImageCreator;
+import minigames.maze.MazeMap;
 import ui.*;
 
 import javax.swing.*;
@@ -11,14 +17,81 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class SceneBuilder {
-    public static HashMap<String, UIScene> buildUIScenes(JFrame screen){
-        HashMap<String, UIScene> scenes = new HashMap<>();
+    public static Map<String, MinigameScene> buildMinigameScenes(){
+        Map<String, MinigameScene> scenes = new HashMap<>();
+
+        for (String name : new String[]{"MAIN_MENU", "MAIN_GAME", "STREET"}) {
+            MinigameController minigameController = null;
+            ImageCreator minigameImageCreator = null;
+            switch (name){
+                case "STREET" -> {
+                    minigameController = new MazeController();
+                    MazeController mz = (MazeController) minigameController;
+                    mz.createMap(60, 60, 14, 5, 15);
+                    minigameImageCreator = new MazeImageCreator(mz);
+//                    InputMap defaultInputMap = GameController.getScreen().getGamePanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+//                    ActionMap defaultActionMap = GameController.getScreen().getGamePanel().getActionMap();
+//
+//                    defaultActionMap.put("MINIGAME_MOVE_RIGHT", new AbstractAction() {
+//                        @Override
+//                        public void actionPerformed(ActionEvent e) {
+//                            try {
+//                                InputCommandsManager.callCommand("MINIGAME_MOVE_RIGHT");
+//                            } catch (Exception ex) {
+//                                throw new RuntimeException(ex);
+//                            }
+//                        }
+//                    });
+//                    defaultInputMap.put(KeyStroke.getKeyStroke("D"), "MINIGAME_MOVE_RIGHT");
+//                    defaultActionMap.put("MINIGAME_MOVE_LEFT", new AbstractAction() {
+//                        @Override
+//                        public void actionPerformed(ActionEvent e) {
+//                            try {
+//                                InputCommandsManager.callCommand("MINIGAME_MOVE_LEFT");
+//                            } catch (Exception ex) {
+//                                throw new RuntimeException(ex);
+//                            }
+//                        }
+//                    });
+//                    defaultInputMap.put(KeyStroke.getKeyStroke("A"), "MINIGAME_MOVE_LEFT");
+//                    defaultActionMap.put("MINIGAME_MOVE_DOWN", new AbstractAction() {
+//                        @Override
+//                        public void actionPerformed(ActionEvent e) {
+//                            try {
+//                                InputCommandsManager.callCommand("MINIGAME_MOVE_DOWN");
+//                            } catch (Exception ex) {
+//                                throw new RuntimeException(ex);
+//                            }
+//                        }
+//                    });
+//                    defaultInputMap.put(KeyStroke.getKeyStroke("S"), "MINIGAME_MOVE_DOWN");
+//                    defaultActionMap.put("MINIGAME_MOVE_UP", new AbstractAction() {
+//                        @Override
+//                        public void actionPerformed(ActionEvent e) {
+//                            try {
+//                                InputCommandsManager.callCommand("MINIGAME_MOVE_UP");
+//                            } catch (Exception ex) {
+//                                throw new RuntimeException(ex);
+//                            }
+//                        }
+//                    });
+//                    defaultInputMap.put(KeyStroke.getKeyStroke("W"), "MINIGAME_MOVE_UP");
+                }
+            }
+            scenes.put(name, new MinigameScene(minigameController, minigameImageCreator));
+        }
+        return scenes;
+    }
+
+    public static Map<String, UIScene> buildUIScenes(JFrame screen){
+        Map<String, UIScene> scenes = new HashMap<>();
 
         UIAnimationController uiAnimationController = GameController.getUiAnimationController();
-        HashMap<UIElementState, Image> rootContainerImages = new HashMap<>();
+        Map<UIElementState, Image> rootContainerImages = new HashMap<>();
         BufferedImage rootContainerImage = new BufferedImage(screen.getWidth(), screen.getHeight(), BufferedImage.TYPE_INT_ARGB);
         rootContainerImages.put(UIElementState.DEFAULT, rootContainerImage);
 
@@ -48,12 +121,19 @@ public class SceneBuilder {
                     UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Settings menu", null,
                             "assets/images/UI/settingsMenu", -300, 150, 25, 150,
                             new String[]{"Test switch", "test", "Keybinds button"}, new String[]{"NO_ACTIVE_IMAGE", "NOT_INTERACTABLE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Show hide UI switch", "flipShowUISwitch", "assets/images/UI/hideShowUISwitch",
+                            screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50, screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50,
+                            null, new String[]{"SWITCH"});
                     UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
-                            0, 0, new String[]{"Settings button", "Settings menu", "Keybinds menu"}, new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
+                            0, 0, new String[]{"Settings button", "Settings menu", "Keybinds menu", "Show hide UI switch"},
+                            new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
                 }
                 case "MAIN_GAME", "STREET" -> {
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Show hide UI switch", "flipShowUISwitch", "assets/images/UI/hideShowUISwitch",
+                            screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50, screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50,
+                            null, new String[]{"SWITCH"});
                     UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
-                            0, 0, new String[]{}, new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
+                            0, 0, new String[]{"Show hide UI switch"}, new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
                 }
             }
             scenes.put(name, new UIScene(uiController, uiUserLinker));
@@ -62,8 +142,8 @@ public class SceneBuilder {
         return scenes;
     }
 
-    public static HashMap<String, GameObjectScene> buildGameObjectScenes(){
-        HashMap<String, GameObjectScene> scenes = new HashMap<>();
+    public static Map<String, GameObjectScene> buildGameObjectScenes(){
+        Map<String, GameObjectScene> scenes = new HashMap<>();
 
         GameObjectCommandsManager commandsManager = GameController.getGameObjectCommandsManager();
         AnimationController animationController = GameController.getAnimationController();
@@ -254,13 +334,13 @@ public class SceneBuilder {
 
                     GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
                             collisionController, "Bg test", new Vertex(500, 500), 2, 2,
-                            "assets/images/gameObjects/bg test", false);
+                            "assets/images/gameObjects/bg test", false, false);
                     GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
                             collisionController, "Saturn", new Vertex(800, 800), 100, 100,
-                            "assets/images/gameObjects/saturn", false);
+                            "assets/images/gameObjects/saturn", false, false);
                     GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
                             collisionController, "Coffee", new Vertex(500, 800), 100, 100,
-                            "assets/images/gameObjects/coffee", false);
+                            "assets/images/gameObjects/coffee", false, false);
                     GameObjectCreator.createMovingObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
                             collisionController, "Player", new Vertex(600, 530), 100, 100,
                             "assets/images/gameObjects/player", false, GameController.getMovementController(), 2);
@@ -274,7 +354,7 @@ public class SceneBuilder {
                     interactionController.addCommand("Coffee", "Coffee");
                     GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
                             collisionController, "Door outside", new Vertex(295, 500), 20, 50,
-                            "assets/images/gameObjects/door outside", false);
+                            "assets/images/gameObjects/door outside", false, false);
                     GameController.getGameObjectCommandsManager().addCommand("Door outside", new Callable<Integer>() {
                         @Override
                         public Integer call() throws Exception {

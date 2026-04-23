@@ -4,12 +4,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import controllers.UIController;
 
 public class UIElement implements Interactable, UIAnimatable{
     private UIImageObserver imageObserver;
-    private HashMap<UIElementState, Image> stateImages;
+    private Map<UIElementState, Image> stateImages;
     private boolean animatable = false;
     private String[] tags;
     private Image currentImage;
@@ -31,7 +32,7 @@ public class UIElement implements Interactable, UIAnimatable{
 
     Callable<Integer> command = null;
 
-    public UIElement(int startX, int startY, int targetX, int targetY, String name, HashMap<UIElementState, Image> stateImages, Image[] animationImages, String[] tags) {
+    public UIElement(int startX, int startY, int targetX, int targetY, String name, Map<UIElementState, Image> stateImages, Image[] animationImages, String[] tags) {
         this.imageObserver = new UIImageObserver();
         this.startX = startX;
         this.startY = startY;

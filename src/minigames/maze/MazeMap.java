@@ -8,6 +8,8 @@ import java.util.List;
 
 public class MazeMap {
     private int[][] map;
+    private boolean[][] unknownMap;
+    protected int[][] rotationMap;
     private final Random random = new Random();
     private List<Room> rooms = new ArrayList<>();
     int width, height;
@@ -31,6 +33,8 @@ public class MazeMap {
         connectRooms();
         System.out.println("Creating map step 4");
         consoleLogMap();
+        createRotationMap();
+        createUnknownMap();
     }
 
     public int[][] getMap() {
@@ -267,5 +271,22 @@ public class MazeMap {
             }
         }
         return result;
+    }
+
+    public void createRotationMap(){
+        rotationMap = new int[height][width];
+        for (int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++){
+                rotationMap[i][j] = random.nextInt(1, 5);
+            }
+        }
+    }
+
+    public void createUnknownMap(){
+        unknownMap = new boolean[height][width];
+    }
+
+    public boolean[][] getUnknownMap() {
+        return unknownMap;
     }
 }

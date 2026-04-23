@@ -1,8 +1,13 @@
 package minigames.maze;
 
+import minigames.maze.items.Bomb;
+import minigames.maze.items.Item;
+import minigames.maze.items.ItemBase;
+import util.GameController;
+
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 public class CoordinatesController {
     private Map<String, Point> coordinates = new HashMap<>();
@@ -17,24 +22,77 @@ public class CoordinatesController {
     }
 
     private boolean isPositionPossible(){
-        for (Point p : coordinates.values()){
-            if (mazeMap.getMap()[(int) p.getX()][(int) p.getY()] == TileType.VOID.ordinal() ||
-                    mazeMap.getMap()[(int) p.getX()][(int) p.getY()] == TileType.WALL.ordinal() ||
-                    mazeMap.getMap()[(int) p.getX()][(int) p.getY()] == TileType.DESTRUCTIBLE_WALL.ordinal()){
-                System.out.println("The position is not possible");
+        for (String key : coordinates.keySet()){
+            Point p = coordinates.get(key);
+            if (mazeMap.getMap()[(int) p.y][(int) p.x] == TileType.VOID.ordinal() ||
+                    mazeMap.getMap()[(int) p.y][(int) p.x] == TileType.WALL.ordinal() ||
+                    mazeMap.getMap()[(int) p.y][(int) p.x] == TileType.DESTRUCTIBLE_WALL.ordinal()){
+//                System.out.println("The position is not possible. Key: " + key);
+//                System.out.println("The position is: x: " + p.x + ", y: " + p.y);
                 return false;
             }
         }
         return true;
     }
 
-    public void move(String key, int addX, int addY){
+    public void move(String key, int addX, int addY, InventoryController inventoryController){
         Point oldPos = coordinates.get(key);
         Point newPos = new Point((int) (oldPos.getX() + addX), (int) (oldPos.getY() + addY));
         coordinates.replace(key, newPos);
         if (!(isPositionPossible())){
             coordinates.replace(key, oldPos);
         }
+        if (Objects.equals(key, "player")){
+            for (Point p : getPointsAround("player", 4)) {
+                mazeMap.getUnknownMap()[p.y][p.x] = true;
+            }
+            String[] items = isOnCoordinates(coordinates.get(key));
+            if (items == null){
+                return;
+            }
+            for (String item : items){
+                Item i = getItem(item, inventoryController);
+                if (i == null){
+                    continue;
+                }
+                inventoryController.pickUpItem(i);
+            }
+        }
+    }
+
+    private static Item getItem(String item, InventoryController inventoryController) {
+        Item i = null;
+        String searchString = null;
+        if (item.indexOf('c') == -1){
+            searchString = item;
+        } else {
+            searchString = item.substring(0, item.indexOf('-'));
+        }
+        switch (searchString) {
+            case "bomb" -> {
+                i = new Bomb(item, new Item() {
+                    @Override
+                    public void use() {
+
+                    }
+
+                    @Override
+                    public String getName() {
+                        return item;
+                    }
+                });
+            }
+            case "exit key" -> {
+                i = new ItemBase("exit key");
+            }
+            case "portal" -> {
+                System.out.println("A portal has been interacted with just now");
+                if (inventoryController.hasItem("exit key")){
+                    GameController.getSceneManager().changeScene(GameController.getScreen(), "MAIN_GAME");
+                }
+            }
+        }
+        return i;
     }
 
     public Point[] getPointsAround(String key, int rad){
@@ -47,6 +105,26 @@ public class CoordinatesController {
     }
 
     protected Point getCoordinates(String key){
+        if (!(coordinates.containsKey(key))) {
+            return null;
+        }
         return coordinates.get(key);
+    }
+
+    protected String[] isOnCoordinates(Point p){
+        List<String> result = new ArrayList<>();
+        for (Map.Entry<String, Point> entry : coordinates.entrySet()){
+            if (entry.getValue() == p){
+                result.add(entry.getKey());
+            }
+        }
+        if (result.isEmpty()){
+            return null;
+        }
+        return result.toArray(new String[0]);
+    }
+
+    protected void removeObject(String key){
+        coordinates.remove(key);
     }
 }

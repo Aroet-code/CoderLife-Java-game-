@@ -3,6 +3,9 @@ package controllers;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import ui.*;
 
 public class UIController {
@@ -115,6 +118,23 @@ public class UIController {
         collisionShapes.put(key, sw.getCollisionShape());
         tags.put(key, sw.getTags());
         hidden.put(key, false);
+    }
+
+    public void flipAllElement(String[] exceptions){
+        for (Map.Entry<String, Boolean> entry : hidden.entrySet()){
+            boolean excepted = false;
+            if (exceptions != null) {
+                for (String ex : exceptions) {
+                    if (Objects.equals(entry.getKey(), ex)) {
+                        excepted = true;
+                        break;
+                    }
+                }
+            }
+            if (!(excepted)){
+                entry.setValue(!(entry.getValue()));
+            }
+        }
     }
 
     public void hideElement(String key){

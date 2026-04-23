@@ -1,6 +1,6 @@
 package minigames.core;
 
-abstract class TickTimer implements Timer{
+public class TickTimer implements Timer{
     long tick = 0;
 
     @Override

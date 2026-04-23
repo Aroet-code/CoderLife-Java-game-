@@ -2,19 +2,25 @@ package util;
 
 import camera.Screen;
 import gameObject.GameObjectScene;
+import minigames.core.MinigameScene;
+import minigames.maze.MazeController;
 import ui.UIScene;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class SceneManager {
-    private static HashMap<String, UIScene> uiScenes;
-    private static HashMap<String, GameObjectScene> gameObjectScenes;
+    private static Map<String, UIScene> uiScenes;
+    private static Map<String, GameObjectScene> gameObjectScenes;
+    private static Map<String, MinigameScene> minigameScenes;
     private String scene;
     private Screen screen;
 
     public void changeScene(Screen screen, String scene){
         screen.displayUIScene(uiScenes.get(scene));
         screen.displayGameObjectScene(gameObjectScenes.get(scene));
+        screen.displayMinigameScene(minigameScenes.get(scene));
+        doNecessitiesForMinigameScene(minigameScenes.get(scene));
 //        GameController.getUiAnimationController().clearAnimations();
         this.scene = scene;
     }
@@ -35,11 +41,15 @@ public class SceneManager {
         }
     }
 
-    public static void setUiScenes(HashMap<String, UIScene> uiScenes) {
+    public static void setUiScenes(Map<String, UIScene> uiScenes) {
         SceneManager.uiScenes = uiScenes;
     }
 
-    public static void setGameObjectScenes(HashMap<String, GameObjectScene> gameObjectScenes) {
+    public static void setMinigameScenes(Map<String, MinigameScene> minigameScenes){
+        SceneManager.minigameScenes = minigameScenes;
+    }
+
+    public static void setGameObjectScenes(Map<String, GameObjectScene> gameObjectScenes) {
         SceneManager.gameObjectScenes = gameObjectScenes;
     }
 
@@ -52,5 +62,14 @@ public class SceneManager {
 
     public void tryInteracting(){
         gameObjectScenes.get(scene).interactionController().tryInteracting();
+    }
+
+    public void doNecessitiesForMinigameScene(MinigameScene scene){
+        if (scene.minigameController() instanceof MazeController){
+            ((MazeController) scene.minigameController()).getCoordinatesController().setMazeMap(((((MazeController)scene.minigameController()).getMap())));
+            GameController.getMinigameMovementController().setMazeCoordinatesController(
+                    ((MazeController) scene.minigameController()).getCoordinatesController());
+
+        }
     }
 }
