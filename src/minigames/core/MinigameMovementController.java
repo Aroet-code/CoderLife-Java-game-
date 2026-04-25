@@ -2,6 +2,7 @@ package minigames.core;
 
 import gameObject.movement.Direction;
 import minigames.maze.CoordinatesController;
+import minigames.maze.InventoryController;
 import minigames.maze.MazeMap;
 import minigames.maze.MovementController;
 
@@ -20,6 +21,10 @@ public class MinigameMovementController {
 
     public void setMazeCoordinatesController(CoordinatesController coordinatesController){
         this.mazeMovementController.setCoordinatesController(coordinatesController);
+    }
+
+    public void setMazeInventoryController(InventoryController inventoryController){
+        this.mazeMovementController.setInventoryController(inventoryController);
     }
 
     public void setMazeMap(CoordinatesController coordinatesController, MazeMap mazeMap){

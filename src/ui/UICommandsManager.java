@@ -2,6 +2,7 @@ package ui;
 
 import controllers.UIAnimationController;
 import controllers.UIController;
+import util.GameController;
 
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -38,11 +39,28 @@ public class UICommandsManager {
         commandsManager.updateCommand("Keybinds button", "OpenKeybindsMenu");
         return 0;
     };
+    Callable<Integer> openGuideMenu = () -> {
+        uiAnimationController.animateElement("Guide menu", UIAnimationType.MOVE);
+//        uiAnimationController.animateElement("Test button", UIAnimationType.MOVE);
+        commandsManager.updateCommand("Guide button", "CloseGuideMenu");
+        return 0;
+    };
+    Callable<Integer> closeGuideMenu = () -> {
+        uiAnimationController.animateElement("Guide menu", UIAnimationType.MOVE_REVERSED);
+//        uiAnimationController.animateElement("Test button", UIAnimationType.MOVE_REVERSED);
+        commandsManager.updateCommand("Guide button", "SpinForward");
+        return 0;
+    };
     Callable<Integer> flipUIHideSwitch = () -> {
         uiController.flipAllElement(new String[]{"Root", "Show hide UI switch"});
         return 0;
     };
+    Callable<Integer> backToMainGame = () -> {
+        GameController.getSceneManager().loadUIScene(GameController.getScreen(), "MAIN_GAME");
+        return 0;
+    };
     Callable<Integer> turnSwitch = () -> {
+        GameController.getScreen().getGamePanel().toggleDrawCollisions(!GameController.getScreen().getGamePanel().isDrawCollisions());
         return 0;
     };
 
@@ -53,6 +71,9 @@ public class UICommandsManager {
         commands.put("OpenKeybindsMenu", openKeybindsMenu);
         commands.put("CloseKeybindsMenu", closeKeybindsMenu);
         commands.put("flipShowUISwitch", flipUIHideSwitch);
+        commands.put("backToMainGame", backToMainGame);
+        commands.put("OpenGuideMenu", openGuideMenu);
+        commands.put("CloseGuideMenu", closeGuideMenu);
     }
 
     public void updateCommand(String key, String commandName) throws Exception{

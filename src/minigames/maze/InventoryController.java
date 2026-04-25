@@ -7,12 +7,12 @@ import minigames.maze.items.Item;
 import java.util.Objects;
 
 public class InventoryController {
+    private final MazeController mazeController;
+    private final Item[] items = new Item[4];
+
     public InventoryController(MazeController mazeController) {
         this.mazeController = mazeController;
     }
-
-    private MazeController mazeController;
-    private Item[] items = new Item[4];
 
     public void useItem(int slot){
         if (slot > items.length){
@@ -45,10 +45,17 @@ public class InventoryController {
 
     public boolean hasItem(String name){
         for (Item item : items){
+            if (item == null){
+                continue;
+            }
             if (Objects.equals(item.getName(), name)){
                 return true;
             }
         }
         return false;
+    }
+
+    protected Item[] getItems(){
+        return items;
     }
 }

@@ -24,6 +24,7 @@ public class MazeController extends MinigameController {
         commandsExecutor = new MazeCommandsExecutor(coordinatesController, map);
         inventoryController = new InventoryController(this);
         movementController.setInventoryController(inventoryController);
+        movementController.setCoordinatesController(coordinatesController);
         List<Point> possibleSpawns = map.getPossibleSpawns();
         int id = random.nextInt(10000);
         Point exitKeySpawnPoint = possibleSpawns.get(id % possibleSpawns.size());
@@ -39,8 +40,8 @@ public class MazeController extends MinigameController {
         for (int i = 0; i < 3; i++) {
             id = random.nextInt(10000);
             Point bombSpawnPoint = possibleSpawns.get(id % possibleSpawns.size());
-            coordinatesController.addCoordinates("bomb-" + i, bombSpawnPoint);
-            items.add("bomb-" + i);
+            coordinatesController.addCoordinates("coin-" + i, bombSpawnPoint);
+            items.add("coin-" + i);
         }
         id = random.nextInt(10000);
         Point portalSpawnPoint = possibleSpawns.get(id % possibleSpawns.size());
@@ -63,6 +64,8 @@ public class MazeController extends MinigameController {
     public CoordinatesController getCoordinatesController() {
         return coordinatesController;
     }
+
+    public InventoryController getInventoryController(){ return inventoryController; }
 
     public MazeMap getMap() {
         return map;

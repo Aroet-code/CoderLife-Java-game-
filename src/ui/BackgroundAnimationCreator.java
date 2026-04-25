@@ -168,7 +168,7 @@ public class BackgroundAnimationCreator {
             for (int i = 0; i < 15; i++){
                 objects.add(new RectangledFire(0, screen.getHeight(), screen.getWidth(), 1 + (0.08f * i)));
             }
-            objects.add(new AnimatedLabel(500, 2800, 500, 50, "PRESS <ENTER> TO START", new Font("Arial", Font.ITALIC, 32), new Color(0.30f, 0.65f , 1.00f, 1f)));
+            objects.add(new AnimatedLabel(500, 2800, 500, 50, "НАЖМИ <ENTER> ДЛЯ НАЧАЛА", new Font("Arial", Font.ITALIC, 32), new Color(0.30f, 0.65f , 1.00f, 1f)));
             objects.add(new LightLine(100, 5, screen.getHeight(), 0.02f, new Color(0.30f, 0.65f , 1.00f, 1f)));
 //            objects.add(new LightLine(500, 10, screen.getHeight(), 0.015f, new Color(0.30f, 0.65f , 1.00f, 1f)));
         }

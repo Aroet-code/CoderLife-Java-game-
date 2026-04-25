@@ -15,7 +15,7 @@ public class MazeImageCreator extends ImageCreator {
 
     public MazeImageCreator(MazeController minigameController) {
         super(minigameController);
-        for (String key : new String[]{"floor", "void", "door", "wall", "platform", "player", "exit key", "bomb", "activated bomb", "unknown block", "portal"}){
+        for (String key : new String[]{"floor", "void", "door", "wall", "platform", "player", "exit key", "bomb", "activated bomb", "unknown block", "portal", "coin"}){
             imageController.preloadImage(key, "assets/images/minigames/maze/" + key + ".png");
         }
 //        for (int i = 1; i < 5; i++){

@@ -122,8 +122,10 @@ public class GameObjectCreator {
         imageController.addImagePackage(name, pkg);
         gameObjectCoordinatesController.addCoordinates(name, startPos);
         gameObjectCoordinatesController.addCoordinates(name + " collision", startPos);
-        CollisionShape2D collision = new RectangleShape2D(startPos, collisionWidth, collisionHeight);
-        collisionController.addCollision(name, collision, CollisionState.DEFAULT);
+        if (!(collisionWidth == 0 || collisionHeight == 0)){
+            CollisionShape2D collision = new RectangleShape2D(startPos, collisionWidth, collisionHeight);
+            collisionController.addCollision(name, collision, CollisionState.DEFAULT);
+        }
         gameObjectController.addKey(name);
     }
 

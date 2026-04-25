@@ -41,6 +41,7 @@ public class CoordinatesController {
         coordinates.replace(key, newPos);
         if (!(isPositionPossible())){
             coordinates.replace(key, oldPos);
+            return;
         }
         if (Objects.equals(key, "player")){
             for (Point p : getPointsAround("player", 4)) {
@@ -52,6 +53,9 @@ public class CoordinatesController {
             }
             for (String item : items){
                 Item i = getItem(item, inventoryController);
+                if (item.equals("player")){
+                    continue;
+                }
                 if (i == null){
                     continue;
                 }
@@ -60,10 +64,10 @@ public class CoordinatesController {
         }
     }
 
-    private static Item getItem(String item, InventoryController inventoryController) {
+    private Item getItem(String item, InventoryController inventoryController) {
         Item i = null;
         String searchString = null;
-        if (item.indexOf('c') == -1){
+        if (item.indexOf('-') == -1){
             searchString = item;
         } else {
             searchString = item.substring(0, item.indexOf('-'));
@@ -82,13 +86,27 @@ public class CoordinatesController {
                     }
                 });
             }
+            case "coin" -> {
+                System.out.println("Just interacted with a coin");
+                i = new ItemBase(item);
+                GameController.getAdvancedAudioManager().playCachedSound("coin pickup");
+
+            }
             case "exit key" -> {
+                System.out.println("Just interacted with the key");
                 i = new ItemBase("exit key");
+                for (Item it : inventoryController.getItems()){
+                    if (it == null){
+                        continue;
+                    }
+                    System.out.println("Item: " + it.getName());
+                }
             }
             case "portal" -> {
                 System.out.println("A portal has been interacted with just now");
                 if (inventoryController.hasItem("exit key")){
                     GameController.getSceneManager().changeScene(GameController.getScreen(), "MAIN_GAME");
+                    coordinates.replace("player", new Point(1, 1));
                 }
             }
         }
@@ -114,7 +132,7 @@ public class CoordinatesController {
     protected String[] isOnCoordinates(Point p){
         List<String> result = new ArrayList<>();
         for (Map.Entry<String, Point> entry : coordinates.entrySet()){
-            if (entry.getValue() == p){
+            if (entry.getValue().equals(p)){
                 result.add(entry.getKey());
             }
         }

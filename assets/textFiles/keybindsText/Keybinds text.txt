@@ -1,3 +1,3 @@
-MOVING - WASD or ARROWS
-INTERACT - F
-CLOSE THE GAME - OPEN SETTINGS AND CLOSE IT FROM HERE
+Движение - WASD
+Вернуться в меню - Escape
+Взаимодействие - F

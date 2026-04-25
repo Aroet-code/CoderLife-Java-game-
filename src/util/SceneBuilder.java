@@ -97,10 +97,18 @@ public class SceneBuilder {
 
         UICommandsManager commandsManager = GameController.getUiCommandsManager();
 
-        for (String name : new String[]{"MAIN_MENU", "MAIN_GAME", "STREET"}){
+        for (String name : new String[]{"MAIN_MENU", "MAIN_GAME", "STREET", "CITY_IN_THE_WINDOW"}){
             UIController uiController = new UIController();
             UIUserLinker uiUserLinker = new UIUserLinker(uiController);
             switch (name){
+                case "CITY_IN_THE_WINDOW" -> {
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "City in the window", "backToMainGame", "assets/images/UI/cityInTheWindow",
+                            screen.getWidth() / 2 - 480, screen.getHeight() / 2 - 270, screen.getWidth() / 2 - 480, screen.getHeight() / 2 - 270,
+                            null, new String[]{"NO_HOVER_IMAGE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
+                            0, 0, new String[]{"City in the window"},
+                            new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
+                }
                 case "MAIN_MENU" -> {
                     UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Settings button", "SpinForward",
                             "assets/images/UI/settingsButton",
@@ -122,18 +130,33 @@ public class SceneBuilder {
                             "assets/images/UI/settingsMenu", -300, 150, 25, 150,
                             new String[]{"Test switch", "test", "Keybinds button"}, new String[]{"NO_ACTIVE_IMAGE", "NOT_INTERACTABLE"});
                     UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Show hide UI switch", "flipShowUISwitch", "assets/images/UI/hideShowUISwitch",
-                            screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50, screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50,
+                            screen.getWidth() - 96 - 75, screen.getHeight() - 96 - 75, screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50,
                             null, new String[]{"SWITCH"});
                     UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
                             0, 0, new String[]{"Settings button", "Settings menu", "Keybinds menu", "Show hide UI switch"},
                             new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
                 }
-                case "MAIN_GAME", "STREET" -> {
+                case "MAIN_GAME" -> {
                     UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Show hide UI switch", "flipShowUISwitch", "assets/images/UI/hideShowUISwitch",
-                            screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50, screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50,
+                            screen.getWidth() - 96 - 75, screen.getHeight() - 96 - 75, screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50,
                             null, new String[]{"SWITCH"});
                     UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
                             0, 0, new String[]{"Show hide UI switch"}, new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
+                }
+                case "STREET" -> {
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Guide button", "OpenGuideMenu",
+                            "assets/images/UI/guideButton",
+                            50, screen.getHeight() - 210, 50, screen.getHeight() - 210, null, null);
+                    UICreator.createTextLabel(uiController, uiAnimationController, "Guide menu text", "assets/textFiles/guideMenuText", 0, 0, 0, 0,
+                            new Font("Arial", Font.PLAIN, 16), Color.CYAN, Color.WHITE, 300, 500, 40, 65, 5, new String[]{"NOT_INTERACTABLE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Guide menu", null,
+                            "assets/images/UI/guideMenu", -300, 150, 25, 150,
+                            new String[]{"Guide menu text"}, new String[]{"NO_ACTIVE_IMAGE", "NOT_INTERACTABLE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Show hide UI switch", "flipShowUISwitch", "assets/images/UI/hideShowUISwitch",
+                            screen.getWidth() - 96 - 75, screen.getHeight() - 96 - 75, screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50,
+                            null, new String[]{"SWITCH"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
+                            0, 0, new String[]{"Guide button", "Guide menu", "Show hide UI switch"}, new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
                 }
             }
             scenes.put(name, new UIScene(uiController, uiUserLinker));
@@ -333,13 +356,16 @@ public class SceneBuilder {
                     actionMap = defaultActionMap;
 
                     GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
-                            collisionController, "Bg test", new Vertex(500, 500), 2, 2,
+                            collisionController, "Bg test", new Vertex(500, 500), 0, 0,
                             "assets/images/gameObjects/bg test", false, false);
                     GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
                             collisionController, "Saturn", new Vertex(800, 800), 100, 100,
                             "assets/images/gameObjects/saturn", false, false);
                     GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
-                            collisionController, "Coffee", new Vertex(500, 800), 100, 100,
+                            collisionController, "Food table", new Vertex(480, 520), 0, 0,
+                            "assets/images/gameObjects/food table", false, false);
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Coffee", new Vertex(500, 496), 10, 10,
                             "assets/images/gameObjects/coffee", false, false);
                     GameObjectCreator.createMovingObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
                             collisionController, "Player", new Vertex(600, 530), 100, 100,
@@ -363,11 +389,22 @@ public class SceneBuilder {
                         }
                     });
                     interactionController.addCommand("Door outside", "Door outside");
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Window", new Vertex(550, 500), 20, 10,
+                            "assets/images/gameObjects/window", false, false);
+                    GameController.getGameObjectCommandsManager().addCommand("Window", new Callable<Integer>() {
+                        @Override
+                        public Integer call() throws Exception {
+                            GameController.getSceneManager().loadUIScene(GameController.getScreen(), "CITY_IN_THE_WINDOW");
+                            return 0;
+                        }
+                    });
+                    interactionController.addCommand("Window", "Window");
 
                     GameObjectCreator.createRestrictedArea(collisionController, GameController.getGameObjectCoordinatesController(),
                             new Vertex(200, 200), 100, 100);
                     GameObjectCreator.createAllowedArea(collisionController, GameController.getGameObjectCoordinatesController(),
-                            new Vertex(500, 530), 430, 800);
+                            new Vertex(500, 530), 430, 100);
                 }
                 case "STREET" -> {
                     inputMap = defaultInputMap;

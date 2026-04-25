@@ -69,7 +69,13 @@ public class SceneManager {
             ((MazeController) scene.minigameController()).getCoordinatesController().setMazeMap(((((MazeController)scene.minigameController()).getMap())));
             GameController.getMinigameMovementController().setMazeCoordinatesController(
                     ((MazeController) scene.minigameController()).getCoordinatesController());
-
+            GameController.getMinigameMovementController().setMazeInventoryController(
+                    ((MazeController) scene.minigameController()).getInventoryController()
+            );
         }
+    }
+
+    public void loadUIScene(Screen screen, String scene){
+        screen.displayUIScene(uiScenes.get(scene));
     }
 }

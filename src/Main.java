@@ -31,6 +31,7 @@ public class Main {
         GameController.getGameThreadController().addThread("GAMEPANEL_MAIN", new GamePanelUpdateThread(screen.getGamePanel()));
         GameController.getGameThreadController().addThread("GAMEOBJECT_ANIMATION", new GameObjectAnimationThread(false));
         GameController.getGameThreadController().addThread("IMAGE_RENDER", new ImageRenderingThread(false));
+        GameController.getAdvancedAudioManager().preloadSound("coin pickup", "assets/sounds/sfx/coin-pickup.wav");
 //        GameController.getGameThreadController().addThread("MOVEMENT_TEST", new MovementTestThread(true));
         GameController.getGameThreadController().addThread("MOVEMENT_MAIN", new MovementThread(true));
         GameController.getGameThreadController().addThread("SCENE_INTERACTIONS_MAIN", new SceneInteractionsUpdateThread(false, GameController.getSceneManager()));

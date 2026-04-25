@@ -340,10 +340,15 @@ public class UIElement implements Interactable, UIAnimatable{
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-                Rectangle childCollisionShape = child.getCollisionShape();
-                childCollisionShape.setLocation(this.getAbsoluteX(uiController) + child.getX(),
-                        this.getAbsoluteY(uiController) + child.getY());
-                uiController.updateCollision(childName, childCollisionShape);
+                try {
+                    Rectangle childCollisionShape = child.getCollisionShape();
+
+                    childCollisionShape.setLocation(this.getAbsoluteX(uiController) + child.getX(),
+                            this.getAbsoluteY(uiController) + child.getY());
+                    uiController.updateCollision(childName, childCollisionShape);
+                } catch (NullPointerException e){
+                    System.out.println("Got a null pointer with a child named: " + childName);
+                }
             }
         }
     }

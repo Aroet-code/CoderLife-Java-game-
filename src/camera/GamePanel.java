@@ -20,7 +20,7 @@ public class GamePanel extends AnimatedBackground {
     private GameObjectBatch gameObjectBatch;
     private ImageCreator miniGamesImageCreator;
     private boolean isBackgroundAnimationAvailable = false;
-    private boolean drawCollisions = true;
+    private boolean drawCollisions = false;
 
     public GamePanel() {
         uiBatch = new UIBatch(null);
@@ -59,6 +59,9 @@ public class GamePanel extends AnimatedBackground {
             return;
         }
         uiBatch.drawUI(g, null);
+        if (drawCollisions) {
+            uiBatch.drawCollisionShapes(g);
+        }
 //        uiBatch.drawCollisionShapes(g);
     }
 
@@ -93,6 +96,10 @@ public class GamePanel extends AnimatedBackground {
 
     public void toggleDrawCollisions(boolean value){
         drawCollisions = value;
+    }
+
+    public boolean isDrawCollisions() {
+        return drawCollisions;
     }
 
     public void setMiniGamesImageCreator(ImageCreator miniGamesImageCreator) {

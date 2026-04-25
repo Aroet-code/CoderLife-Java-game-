@@ -6,6 +6,7 @@ import minigames.maze.CoordinatesController;
 import ui.UIScene;
 import ui.UIUserLinker;
 import util.GameController;
+import util.InputCommandsManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -113,6 +114,7 @@ public class Screen extends JFrame {
             this.repaint();
             this.revalidate();
         });
+        setTitle("CoderLife");
     }
 
     public void setUILinker(UIUserLinker uiUserLinker){
@@ -145,6 +147,13 @@ public class Screen extends JFrame {
         gamePanel.setActionMap(gameObjectScene.actionMap());
         GameController.getMovementController().setCollisionController(gameObjectScene.collisionController());
         GameController.getImageController().renderImages();
+        try {
+            for (int i = 0; i < 4; i++) {
+                InputCommandsManager.callCommand("EXPAND");
+            }
+        } catch (Exception e) {
+            System.out.println("It's fine, no need for exceptions");
+        }
     }
 
     public void displayMinigameScene(MinigameScene minigameScene) {
