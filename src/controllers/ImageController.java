@@ -20,6 +20,7 @@ import java.util.Map;
 // This class' purpose is to transfer that DrawObjects data to the image scaler that would scale them
 // And store the scaled images as well, transferring that data to the SpriteBatch class that would draw the images
 
+/// So this class is responsible for all the images in the main game. Minigames have a different one.
 public class ImageController implements ImageObserver {
     private final Map<String, GameObjectState> states = new HashMap<>();
     private final Map<String, Image> renderedImages = new HashMap<>();

@@ -1,5 +1,7 @@
 package gameObject.collisionShapes2D;
 
+import java.awt.*;
+
 public class Vertex {
     private int x, y, z;
     public Vertex(int x, int y){
@@ -11,6 +13,11 @@ public class Vertex {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public Vertex(Point point){
+        this.x = point.x;
+        this.y = point.y;
     }
 
     public int getX() {
@@ -27,5 +34,9 @@ public class Vertex {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public Point toPoint(){
+        return new Point(x, y);
     }
 }

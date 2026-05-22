@@ -17,5 +17,6 @@ public abstract class ImageCreator {
         return minigameController;
     }
 
+    /// Returns the image for the GamePanel. Both width and height are final and calculated inside
     public abstract Image getImage(int width, int height);
 }

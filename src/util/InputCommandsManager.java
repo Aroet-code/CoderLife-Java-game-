@@ -84,6 +84,30 @@ public class InputCommandsManager {
             return 0;
         };
         commands.put("STOP_MOVING_X", stopMovingX);
+        Callable<Integer> stopMovingX_D = () -> {
+            GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.STOP_X));
+//            GameController.getAnimationController().executeCommand(new AnimationUpdateCommand("Player", AnimationCommandFlag.STOP_ANIMATING));
+            return 0;
+        };
+        commands.put("STOP_MOVING_X_D", stopMovingX_D);
+        Callable<Integer> stopMovingX_A = () -> {
+            GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.STOP_X));
+//            GameController.getAnimationController().executeCommand(new AnimationUpdateCommand("Player", AnimationCommandFlag.STOP_ANIMATING));
+            return 0;
+        };
+        commands.put("STOP_MOVING_X_A", stopMovingX_A);
+        Callable<Integer> stopMovingY_W = () -> {
+            GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.STOP_Y));
+//            GameController.getAnimationController().executeCommand(new AnimationUpdateCommand("Player", AnimationCommandFlag.STOP_ANIMATING));
+            return 0;
+        };
+        commands.put("STOP_MOVING_Y_W", stopMovingY_W);
+        Callable<Integer> stopMovingY_S = () -> {
+            GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.STOP_Y));
+//            GameController.getAnimationController().executeCommand(new AnimationUpdateCommand("Player", AnimationCommandFlag.STOP_ANIMATING));
+            return 0;
+        };
+        commands.put("STOP_MOVING_Y_S", stopMovingY_S);
         Callable<Integer> stopMovingY = () -> {
             GameController.getMovementController().executeCommand(new MovementCommandPackage("Player", MovementCommand.STOP_Y));
             return 0;
@@ -110,6 +134,16 @@ public class InputCommandsManager {
             return 0;
         };
         commands.put("FREE_CAMERA", switchFreeCameraMovement);
+        Callable<Integer> pressShift = () -> {
+            MovementStateHandler.holdingShift = true;
+            return 0;
+        };
+        commands.put("PRESS_SHIFT", pressShift);
+        Callable<Integer> releaseShift = () -> {
+            MovementStateHandler.holdingShift = false;
+            return 0;
+        };
+        commands.put("RELEASE_SHIFT", releaseShift);
 //        Callable<Integer> minigameMoveRight = () -> {
 //
 //            return 0;

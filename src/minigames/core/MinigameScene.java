@@ -1,4 +1,4 @@
 package minigames.core;
 
-public record MinigameScene(MinigameController minigameController, ImageCreator imageCreator) {
+public record MinigameScene(MinigameController minigameController, ImageCreator imageCreator, GamePlayer gp) {
 }

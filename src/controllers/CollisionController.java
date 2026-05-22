@@ -61,6 +61,9 @@ public class CollisionController {
             if (GameController.getScreen().getGamePanel().getAnimation() == null){
                 return null;
             }
+//            if (GameController.getSceneManager().isSceneMinigame()){
+//
+//            }
             System.out.println("The main collision in CollisionController == null");
         }
         ArrayList<String> collidedWith = new ArrayList<>();

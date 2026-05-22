@@ -52,8 +52,8 @@ public class GamePanel extends AnimatedBackground {
             }
         }
         if (miniGamesImageCreator != null) {
-            Image img = miniGamesImageCreator.getImage(minigameWidth, minigameHeight);
-            g.drawImage(img, getWidth() / 2 - (minigameWidth / 2), getHeight() / 2 - (minigameHeight / 2), null);
+            Image img = miniGamesImageCreator.getImage(this.getWidth(), this.getHeight());
+            g.drawImage(img, getWidth() / 2 - (this.getWidth() / 2), getHeight() / 2 - (this.getHeight() / 2), null);
         }
         if (uiBatch.isUiControllerNull()){
             return;

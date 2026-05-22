@@ -2,8 +2,10 @@ package util;
 
 import camera.Screen;
 import gameObject.GameObjectScene;
+import minigames.cooking.CookingGamePlayer;
 import minigames.core.MinigameScene;
 import minigames.maze.MazeController;
+import threads.CookingMinigameThread;
 import ui.UIScene;
 
 import java.util.HashMap;
@@ -72,6 +74,10 @@ public class SceneManager {
             GameController.getMinigameMovementController().setMazeInventoryController(
                     ((MazeController) scene.minigameController()).getInventoryController()
             );
+        }
+        if (scene.gp() instanceof CookingGamePlayer){
+            ((CookingMinigameThread)GameController.getGameThreadController().getThreadBase(scene.gp().getThreadName())).setGp(scene.gp());
+            GameController.getGameThreadController().enableThread(scene.gp().getThreadName());
         }
     }
 

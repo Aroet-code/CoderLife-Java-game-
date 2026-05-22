@@ -1,6 +1,8 @@
 import camera.Screen;
 import gameObject.collisionShapes2D.Vertex;
 import gameObject.image.GameObjectImagePackage;
+import minigames.cooking.CookingCollisionController;
+import minigames.cooking.CookingMinigameController;
 import minigames.maze.*;
 import sounds.AdvancedAudioManager;
 import threads.*;
@@ -35,6 +37,7 @@ public class Main {
 //        GameController.getGameThreadController().addThread("MOVEMENT_TEST", new MovementTestThread(true));
         GameController.getGameThreadController().addThread("MOVEMENT_MAIN", new MovementThread(true));
         GameController.getGameThreadController().addThread("SCENE_INTERACTIONS_MAIN", new SceneInteractionsUpdateThread(false, GameController.getSceneManager()));
+//        GameController.getGameThreadController().addThread("COOKING_MAIN", new CookingMinigameThread(false, null));
 
         BackgroundAnimationCreator.create();
         GameController.getScreen().getGamePanel().setAnimation(BackgroundAnimationCreator.mainMenuAnimation);
@@ -59,6 +62,7 @@ public class Main {
 //        ObjCreator.uiAnimationThread.enable();
 //        ObjCreator.uiAnimationThread.run();
 
+        Thread.sleep(5);
         GameController.getGameThreadController().runThreads();
 
 //        MazeMap mazeMap = new MazeMap(40, 40, 8, 5, 9);
@@ -82,5 +86,8 @@ public class Main {
 //        mazeCommandsExecutor.executeCommand(new ItemUsePackage("Bomb", 0, new ItemUseFlags[]{ItemUseFlags.REMOVE_DESTRUCTIBLE_WALLS}, UseTypeFlags.EXECUTE_RAD_2));
 //
 //        mazeMap.consoleLogMap();
+//
+//        CookingMinigameController cookingMinigameController = new CookingMinigameController();
+//        cookingMinigameController.init(5, 0.5f, 30, 20);
     }
 }

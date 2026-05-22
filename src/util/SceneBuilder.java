@@ -4,17 +4,24 @@ import controllers.*;
 import gameObject.GameObjectCreator;
 import gameObject.GameObjectScene;
 import gameObject.collisionShapes2D.Vertex;
+import minigames.cooking.CookingGamePlayer;
+import minigames.cooking.CookingImageCreator;
+import minigames.cooking.CookingMinigameController;
+import minigames.core.GamePlayer;
 import minigames.core.ImageCreator;
 import minigames.core.MinigameController;
 import minigames.core.MinigameScene;
 import minigames.maze.MazeController;
 import minigames.maze.MazeImageCreator;
 import minigames.maze.MazeMap;
+import threads.CookingMinigameThread;
 import ui.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,62 +34,23 @@ public class SceneBuilder {
         for (String name : new String[]{"MAIN_MENU", "MAIN_GAME", "STREET"}) {
             MinigameController minigameController = null;
             ImageCreator minigameImageCreator = null;
+            GamePlayer gp = null;
             switch (name){
-                case "STREET" -> {
+                case "NULL" -> {
                     minigameController = new MazeController();
                     MazeController mz = (MazeController) minigameController;
                     mz.createMap(60, 60, 14, 5, 15);
                     minigameImageCreator = new MazeImageCreator(mz);
-//                    InputMap defaultInputMap = GameController.getScreen().getGamePanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-//                    ActionMap defaultActionMap = GameController.getScreen().getGamePanel().getActionMap();
-//
-//                    defaultActionMap.put("MINIGAME_MOVE_RIGHT", new AbstractAction() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            try {
-//                                InputCommandsManager.callCommand("MINIGAME_MOVE_RIGHT");
-//                            } catch (Exception ex) {
-//                                throw new RuntimeException(ex);
-//                            }
-//                        }
-//                    });
-//                    defaultInputMap.put(KeyStroke.getKeyStroke("D"), "MINIGAME_MOVE_RIGHT");
-//                    defaultActionMap.put("MINIGAME_MOVE_LEFT", new AbstractAction() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            try {
-//                                InputCommandsManager.callCommand("MINIGAME_MOVE_LEFT");
-//                            } catch (Exception ex) {
-//                                throw new RuntimeException(ex);
-//                            }
-//                        }
-//                    });
-//                    defaultInputMap.put(KeyStroke.getKeyStroke("A"), "MINIGAME_MOVE_LEFT");
-//                    defaultActionMap.put("MINIGAME_MOVE_DOWN", new AbstractAction() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            try {
-//                                InputCommandsManager.callCommand("MINIGAME_MOVE_DOWN");
-//                            } catch (Exception ex) {
-//                                throw new RuntimeException(ex);
-//                            }
-//                        }
-//                    });
-//                    defaultInputMap.put(KeyStroke.getKeyStroke("S"), "MINIGAME_MOVE_DOWN");
-//                    defaultActionMap.put("MINIGAME_MOVE_UP", new AbstractAction() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            try {
-//                                InputCommandsManager.callCommand("MINIGAME_MOVE_UP");
-//                            } catch (Exception ex) {
-//                                throw new RuntimeException(ex);
-//                            }
-//                        }
-//                    });
-//                    defaultInputMap.put(KeyStroke.getKeyStroke("W"), "MINIGAME_MOVE_UP");
+                }
+                case "STREET" -> {
+                    gp = new CookingGamePlayer("COOKING_MAIN");
+                    gp.init();
+                    ((CookingGamePlayer) gp).startGame(5, 0.5f, 30, 20);
+                    minigameImageCreator = new CookingImageCreator(((CookingGamePlayer) gp).getMinigameController());
+                    GameController.getGameThreadController().addThread("COOKING_MAIN", new CookingMinigameThread(false, gp));
                 }
             }
-            scenes.put(name, new MinigameScene(minigameController, minigameImageCreator));
+            scenes.put(name, new MinigameScene(minigameController, minigameImageCreator, gp));
         }
         return scenes;
     }
@@ -187,11 +155,13 @@ public class SceneBuilder {
             }
         });
         defaultInputMap.put(KeyStroke.getKeyStroke("W"), "MOVE_UP");
+        defaultInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.SHIFT_DOWN_MASK, false), "MOVE_UP");
         defaultActionMap.put("MOVE_UP", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 //                                System.out.println("It works just fine.");
+                    MovementStateHandler.movingUp = true;
                     InputCommandsManager.callCommand("MOVE_UP");
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -199,11 +169,13 @@ public class SceneBuilder {
             }
         });
         defaultInputMap.put(KeyStroke.getKeyStroke("S"), "MOVE_DOWN");
+        defaultInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_DOWN_MASK, false), "MOVE_DOWN");
         defaultActionMap.put("MOVE_DOWN", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 //                                System.out.println("It works just fine.");
+                    MovementStateHandler.movingDown = true;
                     InputCommandsManager.callCommand("MOVE_DOWN");
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -211,72 +183,84 @@ public class SceneBuilder {
             }
         });
         defaultInputMap.put(KeyStroke.getKeyStroke("D"), "MOVE_RIGHT");
+        defaultInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.SHIFT_DOWN_MASK, false), "MOVE_RIGHT");
         defaultActionMap.put("MOVE_RIGHT", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 //                                System.out.println("It works just fine.");
                     InputCommandsManager.callCommand("MOVE_RIGHT");
+                    MovementStateHandler.movingRight = true;
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
         defaultInputMap.put(KeyStroke.getKeyStroke("A"), "MOVE_LEFT");
+        defaultInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.SHIFT_DOWN_MASK, false), "MOVE_LEFT");
         defaultActionMap.put("MOVE_LEFT", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 //                                System.out.println("It works just fine.");
+                    MovementStateHandler.movingLeft = true;
                     InputCommandsManager.callCommand("MOVE_LEFT");
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
-        defaultInputMap.put(KeyStroke.getKeyStroke("released D"), "STOP_MOVING_X");
-        defaultActionMap.put("STOP_MOVING_X", new AbstractAction() {
+        defaultInputMap.put(KeyStroke.getKeyStroke("released D"), "STOP_MOVING_X_D");
+        defaultInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.SHIFT_DOWN_MASK, true), "STOP_MOVING_X_D");
+        defaultActionMap.put("STOP_MOVING_X_D", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 //                                System.out.println("It works just fine.");
-                    InputCommandsManager.callCommand("STOP_MOVING_X");
+                    InputCommandsManager.callCommand("STOP_MOVING_X_D");
+                    MovementStateHandler.movingRight = false;
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
-        defaultInputMap.put(KeyStroke.getKeyStroke("released A"), "STOP_MOVING_X");
-        defaultActionMap.put("STOP_MOVING_X", new AbstractAction() {
+        defaultInputMap.put(KeyStroke.getKeyStroke("released A"), "STOP_MOVING_X_A");
+        defaultInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.SHIFT_DOWN_MASK, true), "STOP_MOVING_X_A");
+        defaultActionMap.put("STOP_MOVING_X_A", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 //                                System.out.println("It works just fine.");
-                    InputCommandsManager.callCommand("STOP_MOVING_X");
+                    InputCommandsManager.callCommand("STOP_MOVING_X_A");
+                    MovementStateHandler.movingLeft = false;
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
-        defaultInputMap.put(KeyStroke.getKeyStroke("released W"), "STOP_MOVING_Y");
-        defaultActionMap.put("STOP_MOVING_Y", new AbstractAction() {
+        defaultInputMap.put(KeyStroke.getKeyStroke("released W"), "STOP_MOVING_Y_W");
+        defaultInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.SHIFT_DOWN_MASK, true), "STOP_MOVING_Y_W");
+        defaultActionMap.put("STOP_MOVING_Y_W", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 //                                System.out.println("It works just fine.");
-                    InputCommandsManager.callCommand("STOP_MOVING_Y");
+                    InputCommandsManager.callCommand("STOP_MOVING_Y_W");
+                    MovementStateHandler.movingUp = false;
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
-        defaultInputMap.put(KeyStroke.getKeyStroke("released S"), "STOP_MOVING_Y");
-        defaultActionMap.put("STOP_MOVING_Y", new AbstractAction() {
+        defaultInputMap.put(KeyStroke.getKeyStroke("released S"), "STOP_MOVING_Y_S");
+        defaultInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.SHIFT_DOWN_MASK, true), "STOP_MOVING_Y_S");
+        defaultActionMap.put("STOP_MOVING_Y_S", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 //                                System.out.println("It works just fine.");
-                    InputCommandsManager.callCommand("STOP_MOVING_Y");
+                    InputCommandsManager.callCommand("STOP_MOVING_Y_S");
+                    MovementStateHandler.movingDown = false;
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -329,7 +313,51 @@ public class SceneBuilder {
                 }
             }
         });
-
+//        defaultInputMap.put(KeyStroke.getKeyStroke("pressed SHIFT"), "PRESS_SHIFT");
+//        defaultActionMap.put("PRESS_SHIFT", new AbstractAction() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                try {
+//                    InputCommandsManager.callCommand("PRESS_SHIFT");
+//                    System.out.println("Holding shift.");
+//                } catch (Exception ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//            }
+//        });
+//        defaultInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true), "RELEASE_SHIFT");
+//        defaultActionMap.put("RELEASE_SHIFT", new AbstractAction() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                try {
+//                    InputCommandsManager.callCommand("RELEASE_SHIFT");
+//                    System.out.println("Released shift.");
+//                } catch (Exception ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//            }
+//        });
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+            if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                try {
+                    InputCommandsManager.callCommand("PRESS_SHIFT");
+//                    System.out.println("Holding shift.");
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+                return true;
+            }
+            if (e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                try {
+                    InputCommandsManager.callCommand("RELEASE_SHIFT");
+//                    System.out.println("Released shift.");
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+                return true;
+            }
+            return false; // let normal processing continue
+        });
         for (String scene : new String[]{"MAIN_MENU", "MAIN_GAME", "STREET"}) {
             GameObjectController gameObjectController = new GameObjectController();
             CollisionController collisionController = new CollisionController(GameController.getGameObjectCoordinatesController());
