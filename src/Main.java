@@ -1,8 +1,6 @@
 import camera.Screen;
 import gameObject.collisionShapes2D.Vertex;
 import gameObject.image.GameObjectImagePackage;
-import minigames.cooking.CookingCollisionController;
-import minigames.cooking.CookingMinigameController;
 import minigames.maze.*;
 import sounds.AdvancedAudioManager;
 import threads.*;

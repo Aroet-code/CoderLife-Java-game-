@@ -4,7 +4,6 @@ import gameObject.GameObjectState;
 import gameObject.image.*;
 import gameObject.movement.Direction;
 import gameObject.movement.SetDirectionCommand;
-import util.GameController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +12,7 @@ import java.awt.image.ImageObserver;
 import java.util.HashMap;
 import java.util.Map;
 
-//// Never mind. This system would work differently.
+// Never mind. This system would work differently.
 // How would this system work? First of all, we have all the images and the coordinates data in DrawObject class
 // Second of all, we have an ImageController class that also acts like an ImageObserver
 // There would be another class that would help to determine which objects to draw based on the distance between the player and the object
