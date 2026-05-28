@@ -1,5 +1,7 @@
 package minigames.cooking;
 
+import util.GameController;
+
 import java.awt.*;
 import java.util.Map;
 import java.util.List;
@@ -10,7 +12,7 @@ public class MovementController {
     public static float PLAYER_SPEED = 5;
     public static float START_SPEED = 2;
     public static float SPEED_PER_AR = 1;
-    private static final String[] NOT_FALLING_OBJECTS = new String[]{"Player"};
+    private static final String[] NOT_FALLING_OBJECTS = new String[]{"Player", "Floor"};
 
     private void moveObjectsDown(float ar){
         float speed = START_SPEED + (SPEED_PER_AR * ar);
@@ -45,6 +47,10 @@ public class MovementController {
         }
         Point playerCoords = cc.getCoordinates("Player");
         playerCoords.x += (int) (dirX * PLAYER_SPEED);
+        if (playerCoords.x - 80 >= GameController.getScreen().getWidth() - 30 || playerCoords.x - 80 <= 30){
+            playerCoords.x -= (int) (dirX * PLAYER_SPEED);
+            return;
+        }
         if (fastMode){
             playerCoords.x += (int) (dirX * PLAYER_SPEED);
         }

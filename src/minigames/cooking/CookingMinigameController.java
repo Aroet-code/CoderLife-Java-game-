@@ -19,7 +19,7 @@ public class CookingMinigameController extends MinigameController {
         return objects.entrySet().stream().toList();
     }
 
-    public void init(float ar, float secondsDiff, int maxDiffX, int objectsAmount){
+    public void init(float ar, float secondsDiff, float maxSecondsDiff, int objectsAmount){
         cc = new CookingCoordinatesController();
         mc = new MovementController();
         mc.setCoordinatesController(cc);
@@ -40,7 +40,7 @@ public class CookingMinigameController extends MinigameController {
         collisionController.addRectCollision("Floor", GameController.getScreen().getWidth() * 2, 64);
 
         FoodMap foodMap = new FoodMap(cc);
-        foodMap.createMap(ar, secondsDiff, maxDiffX, objectsAmount);
+        foodMap.createMap(ar, secondsDiff, maxSecondsDiff, objectsAmount);
 
         List<String> objectsNames = new ArrayList<>();
         for (var entry : cc.getAllCoordinates()){
@@ -54,19 +54,24 @@ public class CookingMinigameController extends MinigameController {
                 FoodTypes t = types[funValue % types.length];
                 objects.put(name, t);
             }
+            if (name.equals("Player") || name.equals("Floor")){
+                continue;
+            }
             collisionController.addRectCollision(name, 32,32);
         }
 
-        cc.logAllCoordinates();
+//        cc.logAllCoordinates();
     }
 
     protected void reactToCollisionCommand(CookingCollisionCommand command){
         CookingCollisionCommandFlags flag = command.flag();
         if (flag == CookingCollisionCommandFlags.NO_COLLISION_DETECTED){
+            System.out.println("No collision detected flag was called");
             return;
         }
         String objName = command.name();
         if (objName.equals("Player") || objName.equals("Floor")){
+            System.out.println("Player or floor collision");
             return;
         }
         if (flag == CookingCollisionCommandFlags.COLLISION_MISSED){

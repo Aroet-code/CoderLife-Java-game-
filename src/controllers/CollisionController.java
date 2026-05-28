@@ -51,6 +51,10 @@ public class CollisionController {
     }
 
     public void updateCoordinates(String key, Vertex coordinates){
+        if (collisions.get(key) == null){
+            System.out.println("Collision is null for " + key + " in CollisionController");
+            return;
+        }
         collisions.get(key).setCenterCoordinates(coordinates);
         coordinatesController.updateCoordinates(key, coordinates);
     }
@@ -104,6 +108,10 @@ public class CollisionController {
 
     public boolean isPositionPossible(String key){
         CollisionShape2D mainShape = collisions.get(key);
+        if (mainShape == null){
+            System.out.println("The main collision is null in CollisionController.isPositionPossible() for " + key);
+            return false;
+        }
         for (RestrictedShape2D restrictedShape : restrictedShapes.values()){
             if (restrictedShape.intersects(mainShape)){
                 return false;

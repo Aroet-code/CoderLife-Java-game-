@@ -30,6 +30,11 @@ public class CookingCollisionController {
         List<String> result = new ArrayList<>();
 
         CollisionShape2D mainCollision = collisions.get(key);
+
+//        if (key.equals("Floor")){
+//            System.out.println("Debugger here.");
+//        }
+
         for (Map.Entry<String, CollisionShape2D> entry : collisions.entrySet()){
             if (entry.getKey().equals(key)){
                 continue;
@@ -38,7 +43,8 @@ public class CookingCollisionController {
             if (!mainCollision.intersects(collision)){
                 continue;
             }
-            if (key.equals(entry.getKey())){
+            int height = mainCollision.getHeight();
+            if (mainCollision.getCenterCoordinates().getY() - (height / 2) < collision.getCenterCoordinates().getY()){
                 continue;
             }
             result.add(entry.getKey());

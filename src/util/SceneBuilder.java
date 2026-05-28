@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -45,7 +47,7 @@ public class SceneBuilder {
                 case "STREET" -> {
                     gp = new CookingGamePlayer("COOKING_MAIN");
                     gp.init();
-                    ((CookingGamePlayer) gp).startGame(5, 0.5f, 30, 20);
+                    ((CookingGamePlayer) gp).startGame(4, 0.3f, 0.2f, 125);
                     minigameImageCreator = new CookingImageCreator(((CookingGamePlayer) gp).getMinigameController());
                     GameController.getGameThreadController().addThread("COOKING_MAIN", new CookingMinigameThread(false, gp));
                 }

@@ -20,9 +20,10 @@ public class CookingGamePlayer extends GamePlayer {
         this.changeOnlineState(true);
     }
 
-    public void startGame(float ar, float secondsDiff, int maxXDiff, int objectsAmount){
+    public void startGame(float ar, float secondsDiff, float maxSecondsDiff, int objectsAmount){
         CookingMinigameController gc = getMinigameController();
-        gc.init(ar, secondsDiff, maxXDiff, objectsAmount);
+        gc.init(ar, secondsDiff, maxSecondsDiff, objectsAmount);
+        this.ar = ar;
     }
 
     @Override
