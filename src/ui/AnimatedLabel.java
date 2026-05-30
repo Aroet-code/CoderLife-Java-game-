@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class AnimatedLabel extends AnimationObject {
-    private String textFilePath;
+    private String text;
     private double minimalSpeedX = 0;
     private double minimalSpeedY = 0;
     private JLabel label;
@@ -13,7 +13,7 @@ public class AnimatedLabel extends AnimationObject {
 
     public AnimatedLabel(int x, int y, int width, int height, String text, Font font, Color color){
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        this.textFilePath = textFilePath;
+        this.text = text;
         this.setWidth(width);
         this.setHeight(height);
         this.setX(x);
@@ -58,5 +58,9 @@ public class AnimatedLabel extends AnimationObject {
 
     public void setImage(BufferedImage image) {
         this.image = image;
+    }
+
+    public String getText() {
+        return text;
     }
 }

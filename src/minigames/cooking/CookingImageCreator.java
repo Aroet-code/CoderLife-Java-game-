@@ -73,6 +73,7 @@ public class CookingImageCreator extends ImageCreator {
 
             if (coordinates == null){
                 System.out.println("Coordinates of " + key + " == null in CookingImageCreator");
+                continue;
             }
             g.drawImage(objImg, coordinates.x - objImg.getWidth(null) / 2, coordinates.y - objImg.getHeight(null) / 2, null);
         }

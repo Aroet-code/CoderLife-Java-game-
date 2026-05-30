@@ -95,7 +95,7 @@ public class UIController {
         if (elements.containsKey(key)) {
             return elements.get(key);
         } else {
-            throw new Exception("Some element, that is supposed to be initialized, isn't.");
+            throw new Exception("Some element, that is supposed to be initialized, isn't. Element key: " + key);
         }
     }
 

@@ -1,15 +1,18 @@
 package util;
 
 import camera.Screen;
+import controllers.UIAnimationController;
 import gameObject.GameObjectScene;
 import minigames.cooking.CookingGamePlayer;
 import minigames.core.MinigameScene;
 import minigames.maze.MazeController;
 import threads.CookingMinigameThread;
+import ui.UIAnimationType;
 import ui.UIScene;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class SceneManager {
     private static Map<String, UIScene> uiScenes;
@@ -83,5 +86,14 @@ public class SceneManager {
 
     public void loadUIScene(Screen screen, String scene){
         screen.displayUIScene(uiScenes.get(scene));
+        if (Objects.equals(scene, "FRIDGE")){
+            GameController.getUiAnimationController().animateElement("Fridge", UIAnimationType.MOVE);
+        } else if (Objects.equals(scene, "COOKING_DIFFICULTY_SELECT")){
+            GameController.getUiAnimationController().animateElement("Easy diff", UIAnimationType.MOVE);
+        }
+    }
+
+    public MinigameScene getMinigameScene(String key){
+        return minigameScenes.get(key);
     }
 }

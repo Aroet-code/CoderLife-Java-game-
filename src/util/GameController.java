@@ -24,6 +24,22 @@ public class GameController {
     private static ImageScaler imageScaler;
     private static MovementController movementController;
     private static MinigameMovementController minigameMovementController;
+    private static ObjectiveController objectiveController;
+    private static NotificationSystem notificationSystem;
+
+    public static NotificationSystem getNotificationSystem() {
+        if (notificationSystem == null){
+            notificationSystem = new NotificationSystem();
+        }
+        return notificationSystem;
+    }
+
+    public static ObjectiveController getObjectiveController() {
+        if (objectiveController == null){
+            objectiveController = new ObjectiveController();
+        }
+        return objectiveController;
+    }
 
     public static AnimationController getAnimationController() {
         if (animationController == null){

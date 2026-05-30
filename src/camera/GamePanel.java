@@ -8,6 +8,7 @@ import ui.BackgroundAnimation;
 import ui.UIBatch;
 import util.CollisionBatch;
 import util.GameController;
+import util.NotificationSystem;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,6 +63,15 @@ public class GamePanel extends AnimatedBackground {
         if (drawCollisions) {
             uiBatch.drawCollisionShapes(g);
         }
+        g.setFont(new Font("Arial", Font.PLAIN, 24));
+        g.setColor(Color.BLACK);
+        NotificationSystem notificationSystem = GameController.getNotificationSystem();
+        var notifications = notificationSystem.notifications;
+        for (var notification : notifications){
+            g.drawString(notification.getText(), notification.getX(), notification.getY());
+        }
+        notificationSystem.fallDown();
+        g.dispose();
 //        uiBatch.drawCollisionShapes(g);
     }
 
@@ -104,5 +114,9 @@ public class GamePanel extends AnimatedBackground {
 
     public void setMiniGamesImageCreator(ImageCreator miniGamesImageCreator) {
         this.miniGamesImageCreator = miniGamesImageCreator;
+    }
+
+    public UIController getUiController(){
+        return uiBatch.getUiController();
     }
 }

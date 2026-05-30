@@ -33,21 +33,21 @@ public class SceneBuilder {
     public static Map<String, MinigameScene> buildMinigameScenes(){
         Map<String, MinigameScene> scenes = new HashMap<>();
 
-        for (String name : new String[]{"MAIN_MENU", "MAIN_GAME", "STREET"}) {
+        for (String name : new String[]{"MAIN_MENU", "MAIN_GAME", "STREET", "KITCHEN", "COOKING_MINIGAME", "COOKING_DIFFICULTY_SELECT"}) {
             MinigameController minigameController = null;
             ImageCreator minigameImageCreator = null;
             GamePlayer gp = null;
             switch (name){
-                case "NULL" -> {
+                case "STREET" -> {
                     minigameController = new MazeController();
                     MazeController mz = (MazeController) minigameController;
                     mz.createMap(60, 60, 14, 5, 15);
                     minigameImageCreator = new MazeImageCreator(mz);
                 }
-                case "STREET" -> {
+                case "COOKING_MINIGAME" -> {
                     gp = new CookingGamePlayer("COOKING_MAIN");
                     gp.init();
-                    ((CookingGamePlayer) gp).startGame(4, 0.3f, 0.2f, 125);
+                    ((CookingGamePlayer) gp).startGame(4, 0.3f, 0.2f, 125, "NORMAL");
                     minigameImageCreator = new CookingImageCreator(((CookingGamePlayer) gp).getMinigameController());
                     GameController.getGameThreadController().addThread("COOKING_MAIN", new CookingMinigameThread(false, gp));
                 }
@@ -67,10 +67,37 @@ public class SceneBuilder {
 
         UICommandsManager commandsManager = GameController.getUiCommandsManager();
 
-        for (String name : new String[]{"MAIN_MENU", "MAIN_GAME", "STREET", "CITY_IN_THE_WINDOW"}){
+        for (String name : new String[]{"MAIN_MENU", "MAIN_GAME", "COOKING_MINIGAME", "STREET", "CITY_IN_THE_WINDOW", "KITCHEN", "FRIDGE", "COOKING_END_SCREEN", "COOKING_DIFFICULTY_SELECT"}){
             UIController uiController = new UIController();
             UIUserLinker uiUserLinker = new UIUserLinker(uiController);
             switch (name){
+                case "COOKING_END_SCREEN" -> {
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
+                            0, 0, new String[]{},
+                            new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
+                }
+                case "FRIDGE" -> {
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Bat", "messWithABat",
+                            "assets/images/UI/bat", 330, 236, 330, 236,
+                            null, new String[]{"NO_ACTIVE_IMAGE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Eggs", "getEggs",
+                            "assets/images/UI/eggs", 140, 380, 140, 380,
+                            null, new String[]{"NO_ACTIVE_IMAGE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Close fridge button", "closeFridge", "assets/images/UI/closeFridgeButton",
+                            screen.getWidth() - 96 - 75, screen.getHeight() - 96 - 75, screen.getWidth() - 96 - 100, screen.getHeight() - 96 - 50,
+                            null, new String[]{"NO_HOVER_IMAGE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Fridge", null, "assets/images/UI/fridge",
+                            screen.getWidth() / 2 - 240 - 1, screen.getHeight() / 2 - 360 - 1, screen.getWidth() / 2 - 240, screen.getHeight() / 2 - 360,
+                            new String[]{"Eggs", "Bat"}, new String[]{"NO_ACTIVE_IMAGE", "NO_HOVER_IMAGE", "NOT_INTERACTABLE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
+                            0, 0, new String[]{"Fridge", "Close fridge button"},
+                            new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
+                }
+                case "KITCHEN" -> {
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
+                            0, 0, new String[]{},
+                            new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
+                }
                 case "CITY_IN_THE_WINDOW" -> {
                     UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "City in the window", "backToMainGame", "assets/images/UI/cityInTheWindow",
                             screen.getWidth() / 2 - 480, screen.getHeight() / 2 - 270, screen.getWidth() / 2 - 480, screen.getHeight() / 2 - 270,
@@ -127,6 +154,35 @@ public class SceneBuilder {
                             null, new String[]{"SWITCH"});
                     UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
                             0, 0, new String[]{"Guide button", "Guide menu", "Show hide UI switch"}, new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
+                }
+                case "COOKING_DIFFICULTY_SELECT" -> {
+                    int coordinate1, coordinate2, coordinate3;
+                    int thirdOfScreenWidth = screen.getWidth() / 3;
+                    coordinate1 = (thirdOfScreenWidth - 400) / 2;
+                    coordinate2 = thirdOfScreenWidth + coordinate1;
+                    coordinate3 = (2 * thirdOfScreenWidth) + coordinate1;
+                    int coordinateY = (screen.getHeight() - 400) / 2;
+                    UICreator.createTextLabel(uiController, uiAnimationController, "Easy diff text", "assets/textFiles/easyDiffText", 0, 0,
+                            0, 0, new Font("Arial", Font.PLAIN, 24), Color.CYAN, Color.WHITE, 400, 500, 40,
+                            45, 5, new String[]{"NOT_INTERACTABLE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Easy diff", "selectEasyDiff", "assets/images/UI/easyDiff",
+                            coordinate1, coordinateY, coordinate1, coordinateY,
+                            new String[]{"Easy diff text"}, new String[]{"NO_ACTIVE_IMAGE"});
+                    UICreator.createTextLabel(uiController, uiAnimationController, "Normal diff text", "assets/textFiles/normalDiffText", 0, 0,
+                            0, 0, new Font("Arial", Font.PLAIN, 24), Color.CYAN, Color.WHITE, 400, 500, 40,
+                            45, 5, new String[]{"NOT_INTERACTABLE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Normal diff", "selectNormalDiff", "assets/images/UI/normalDiff",
+                            coordinate2, coordinateY, coordinate2, coordinateY,
+                            new String[]{"Normal diff text"}, new String[]{"NO_ACTIVE_IMAGE"});
+                    UICreator.createTextLabel(uiController, uiAnimationController, "Hard diff text", "assets/textFiles/hardDiffText", 0, 0,
+                            0, 0, new Font("Arial", Font.PLAIN, 24), Color.CYAN, Color.WHITE, 400, 500, 40,
+                            45, 5, new String[]{"NOT_INTERACTABLE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Hard diff", "selectHardDiff", "assets/images/UI/hardDiff",
+                            coordinate3, coordinateY, coordinate3, coordinateY,
+                            new String[]{"Hard diff text"}, new String[]{"NO_ACTIVE_IMAGE"});
+                    UICreator.createUIElement(uiController, uiAnimationController, commandsManager, "Root", null, rootContainerImages, null, 0, 0,
+                            0, 0, new String[]{"Easy diff", "Normal diff", "Hard diff"},
+                            new String[]{"NO_HOVER_IMAGE", "NOT_INTERACTABLE", "NO_ACTIVE_IMAGE"});
                 }
             }
             scenes.put(name, new UIScene(uiController, uiUserLinker));
@@ -360,7 +416,7 @@ public class SceneBuilder {
             }
             return false; // let normal processing continue
         });
-        for (String scene : new String[]{"MAIN_MENU", "MAIN_GAME", "STREET"}) {
+        for (String scene : new String[]{"MAIN_MENU", "MAIN_GAME", "STREET", "KITCHEN", "FRIDGE", "COOKING_DIFFICULTY_SELECT",  "COOKING_MINIGAME"}) {
             GameObjectController gameObjectController = new GameObjectController();
             CollisionController collisionController = new CollisionController(GameController.getGameObjectCoordinatesController());
             InteractionController interactionController = new InteractionController(collisionController, "Player");
@@ -398,7 +454,7 @@ public class SceneBuilder {
                             collisionController, "Coffee", new Vertex(500, 496), 10, 10,
                             "assets/images/gameObjects/coffee", false, false);
                     GameObjectCreator.createMovingObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
-                            collisionController, "Player", new Vertex(600, 530), 100, 100,
+                            collisionController, "Player", new Vertex(600, 530), 50, 100,
                             "assets/images/gameObjects/player", false, GameController.getMovementController(), 2);
                     GameController.getGameObjectCommandsManager().addCommand("Coffee", new Callable<Integer>() {
                         @Override
@@ -414,11 +470,31 @@ public class SceneBuilder {
                     GameController.getGameObjectCommandsManager().addCommand("Door outside", new Callable<Integer>() {
                         @Override
                         public Integer call() throws Exception {
-                            GameController.getSceneManager().changeScene(GameController.getScreen(), "STREET");
+                            if (TotalScoreSystem.score >= 250000) {
+                                GameController.getSceneManager().changeScene(GameController.getScreen(), "MAIN_MENU");
+                                GameController.getScreen().getGamePanel().setAnimation(BackgroundAnimationCreator.endGameAnimation);
+                            } else {
+                                GameController.getNotificationSystem().notify("Нужен счёт больше 250 000");
+                            }
                             return 0;
                         }
                     });
                     interactionController.addCommand("Door outside", "Door outside");
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Door basement", new Vertex(700, 500), 20, 50,
+                            "assets/images/gameObjects/door basement", false, false);
+                    GameController.getGameObjectCommandsManager().addCommand("Door basement", new Callable<Integer>() {
+                        @Override
+                        public Integer call() throws Exception {
+                            if (FlagsController.isHasKey()){
+                                GameController.getNotificationSystem().notify("Там больше нечего делать");
+                            } else {
+                                GameController.getSceneManager().changeScene(GameController.getScreen(), "STREET");
+                            }
+                            return 0;
+                        }
+                    });
+                    interactionController.addCommand("Door basement", "Door basement");
                     GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
                             collisionController, "Window", new Vertex(550, 500), 20, 10,
                             "assets/images/gameObjects/window", false, false);
@@ -430,7 +506,21 @@ public class SceneBuilder {
                         }
                     });
                     interactionController.addCommand("Window", "Window");
-
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Door kitchen", new Vertex(410, 500), 20, 50,
+                            "assets/images/gameObjects/door kitchen", false, false);
+                    GameController.getGameObjectCommandsManager().addCommand("Door kitchen", new Callable<Integer>() {
+                        @Override
+                        public Integer call() throws Exception {
+                            if (FlagsController.isHasKey()) {
+                                GameController.getSceneManager().changeScene(GameController.getScreen(), "KITCHEN");
+                            } else {
+                                GameController.getNotificationSystem().notify("Нужен ключ");
+                            }
+                            return 0;
+                        }
+                    });
+                    interactionController.addCommand("Door kitchen", "Door kitchen");
                     GameObjectCreator.createRestrictedArea(collisionController, GameController.getGameObjectCoordinatesController(),
                             new Vertex(200, 200), 100, 100);
                     GameObjectCreator.createAllowedArea(collisionController, GameController.getGameObjectCoordinatesController(),
@@ -440,7 +530,60 @@ public class SceneBuilder {
                     inputMap = defaultInputMap;
                     actionMap = defaultActionMap;
                     GameObjectCreator.createMovingObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
-                            collisionController, "Player", new Vertex(600, 530), 100, 100,
+                            collisionController, "Player", new Vertex(600, 530), 50, 100,
+                            "assets/images/gameObjects/player", false, GameController.getMovementController(), 2);
+                }
+                case "KITCHEN" -> {
+                    inputMap = defaultInputMap;
+                    actionMap = defaultActionMap;
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Kitchen", new Vertex(410, 520), 0, 0,
+                            "assets/images/gameObjects/kitchen", false, false);
+                    GameObjectCreator.createAllowedArea(collisionController, GameController.getGameObjectCoordinatesController(), new Vertex(410, 530), 140, 30);
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Fridge", new Vertex(460, 520), 20, 110,
+                            "assets/images/gameObjects/fridge", false, false);
+                    GameController.getGameObjectCommandsManager().addCommand("Fridge", new Callable<Integer>() {
+                        @Override
+                        public Integer call() throws Exception {
+                            GameController.getSceneManager().loadUIScene(GameController.getScreen(), "FRIDGE");
+                            return 0;
+                        }
+                    });
+                    interactionController.addCommand("Fridge", "Fridge");
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Door back", new Vertex(340, 570), 20, 110,
+                            "assets/images/gameObjects/door back", false, false);
+                    GameController.getGameObjectCommandsManager().addCommand("Door back", new Callable<Integer>() {
+                        @Override
+                        public Integer call() throws Exception {
+                            GameController.getSceneManager().changeScene(GameController.getScreen(), "MAIN_GAME");
+                            return 0;
+                        }
+                    });
+                    interactionController.addCommand("Door back", "Door back");
+                    GameObjectCreator.createMovingObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Player", new Vertex(600, 530), 30, 30,
+                            "assets/images/gameObjects/player", false, GameController.getMovementController(), 2);
+                    GameObjectCreator.createGameObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Cooking pan", new Vertex(400, 520), 20, 110,
+                            "assets/images/gameObjects/cooking pan", false, false);
+                    GameController.getGameObjectCommandsManager().addCommand("Cooking pan", new Callable<Integer>() {
+                        @Override
+                        public Integer call() throws Exception {
+                            if (GameController.getUiCommandsManager().doesHaveEggs()) {
+                                GameController.getSceneManager().loadUIScene(GameController.getScreen(), "COOKING_DIFFICULTY_SELECT");
+                            } else {
+                                GameController.getNotificationSystem().notify("Нужны ингредиенты");
+                            }
+                            return 0;
+                        }
+                    });
+                    interactionController.addCommand("Cooking pan", "Cooking pan");
+                }
+                case "COOKING_MINIGAME" -> {
+                    GameObjectCreator.createMovingObject(gameObjectController, GameController.getImageController(), GameController.getGameObjectCoordinatesController(),
+                            collisionController, "Player", new Vertex(600, 530), 30, 30,
                             "assets/images/gameObjects/player", false, GameController.getMovementController(), 2);
                 }
             }

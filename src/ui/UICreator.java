@@ -68,7 +68,6 @@ public class UICreator {
             animationImages = null;
         }
         if (children == null) {
-
             if ((tags != null) && Arrays.asList(tags).contains("SWITCH")){
                 Switch sw = new Switch(startX, startY, targetX, targetY, name, stateImages, animationImages, tags);
                 uiController.addElement(name, sw, UIElementState.DEFAULT);
@@ -78,18 +77,18 @@ public class UICreator {
                 uiController.addElement(name, element, UIElementState.DEFAULT);
                 uiAnimationController.addElement(name, element);
             }
-            if (command != null) {
-                try {
-                    commandsManager.updateCommand(name, command);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    System.out.println(Arrays.toString(e.getStackTrace()));
-                }
-            }
         } else {
             UIContainer element = new UIContainer(uiController, startX, startY, targetX, targetY, name, stateImages, children, tags);
             uiController.addElement(name, element, UIElementState.DEFAULT);
             uiAnimationController.addElement(name, element);
+        }
+        if (command != null) {
+            try {
+                commandsManager.updateCommand(name, command);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println(Arrays.toString(e.getStackTrace()));
+            }
         }
 //        busy = false;
     }
@@ -103,18 +102,18 @@ public class UICreator {
             UIElement element = new UIElement(startX, startY, targetX, targetY, name, stateImages, animationImages, tags);
             uiController.addElement(name, element, UIElementState.DEFAULT);
             uiAnimationController.addElement(name, element);
-            if (command != null) {
-                try {
-                    commandsManager.updateCommand(name, command);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    System.out.println(Arrays.toString(e.getStackTrace()));
-                }
-            }
         } else {
             UIContainer element = new UIContainer(uiController, startX, startY, targetX, targetY, name, stateImages, children, tags);
             uiController.addElement(name, element, UIElementState.DEFAULT);
             uiAnimationController.addElement(name, element);
+        }
+        if (command != null) {
+            try {
+                commandsManager.updateCommand(name, command);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println(Arrays.toString(e.getStackTrace()));
+            }
         }
 //        busy = false;
     }

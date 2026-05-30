@@ -88,4 +88,8 @@ public class UIBatch {
         }
         return false;
     }
+
+    public UIController getUiController(){
+        return uiController;
+    }
 }

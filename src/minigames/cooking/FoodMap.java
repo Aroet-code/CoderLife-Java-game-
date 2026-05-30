@@ -16,13 +16,26 @@ public class FoodMap {
         this.cc = cc;
     }
 
-    public void createMap(float ar, float secondsDiff, float maxSecondsDiff, int objectsAmount){
+    public void createMap(float ar, float secondsDiff, float maxSecondsDiff, int objectsAmount, String difficulty){
         float playerSpeed = MovementController.PLAYER_SPEED;
         float startSpeed = MovementController.START_SPEED;
         float perArSpeed = MovementController.SPEED_PER_AR;
         totalTime = 0f;
 
         int currentHeight = (int) (0 - GameController.getScreen().getHeight() * 0.5f);
+
+        int minFunValueForSpeed = 6;
+        switch (difficulty){
+            case "EASY" -> {
+                minFunValueForSpeed = 22;
+            }
+            case "NORMAL" -> {
+                minFunValueForSpeed = 16;
+            }
+            case "HARD" -> {
+                minFunValueForSpeed = 6;
+            }
+        }
 
         Point coordinates = new Point(GameController.getScreen().getWidth() / 2, currentHeight);
         float distanceValue = 1;
@@ -37,7 +50,7 @@ public class FoodMap {
                 dir = -1;
             }
             float boosted = 1;
-            if (funValue >= 16){
+            if (funValue >= minFunValueForSpeed){
                 boosted = 2;
             }
             if (distValue >= 8){

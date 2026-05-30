@@ -20,7 +20,7 @@ public class UIThread extends ThreadBase{
             }
             if (isEnabled()){
 //                System.out.println("The ui should be animating. At least the thread executes.");
-                GameController.getUiAnimationController().animateUI(uiController);
+                GameController.getUiAnimationController().animateUI(GameController.getScreen().getGamePanel().getUiController());
             }
         }
     }

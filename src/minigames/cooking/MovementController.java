@@ -47,7 +47,7 @@ public class MovementController {
         }
         Point playerCoords = cc.getCoordinates("Player");
         playerCoords.x += (int) (dirX * PLAYER_SPEED);
-        if (playerCoords.x - 80 >= GameController.getScreen().getWidth() - 30 || playerCoords.x - 80 <= 30){
+        if (playerCoords.x + 80 >= GameController.getScreen().getWidth() - 30 || playerCoords.x - 80 <= 30){
             playerCoords.x -= (int) (dirX * PLAYER_SPEED);
             return;
         }

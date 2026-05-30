@@ -34,4 +34,9 @@ public class CookingScoreSystem {
     private void recalculateAccuracy(){
         accuracy = Float.parseFloat(df.format((100 * ((float) hits / (hits + misses)))));
     }
+
+    protected boolean isComplete(FoodMap foodMap){
+//        System.out.println("foodMap.currentId: " + foodMap.currentId + ", total collected/missed: " + (misses + hits));
+        return (foodMap.currentId == (misses + hits));
+    }
 }

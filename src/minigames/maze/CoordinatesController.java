@@ -3,6 +3,7 @@ package minigames.maze;
 import minigames.maze.items.Bomb;
 import minigames.maze.items.Item;
 import minigames.maze.items.ItemBase;
+import util.FlagsController;
 import util.GameController;
 
 import java.awt.*;
@@ -105,6 +106,7 @@ public class CoordinatesController {
             case "portal" -> {
                 System.out.println("A portal has been interacted with just now");
                 if (inventoryController.hasItem("exit key")){
+                    FlagsController.setHasKey(true);
                     GameController.getSceneManager().changeScene(GameController.getScreen(), "MAIN_GAME");
                     coordinates.replace("player", new Point(1, 1));
                 }

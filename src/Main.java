@@ -5,6 +5,7 @@ import minigames.maze.*;
 import sounds.AdvancedAudioManager;
 import threads.*;
 import ui.BackgroundAnimationCreator;
+import ui.UICommandsManager;
 import util.*;
 
 import javax.swing.*;
@@ -15,15 +16,17 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 //        ScreenPanel panel = new ScreenPanel();
+        UICommandsManager uiCommandsManager = GameController.getUiCommandsManager();
+        Thread.sleep(500);
         AdvancedAudioManager audioManager = new AdvancedAudioManager();
         audioManager.loadSongs();
         audioManager.playBackgroundMusic(null, "MAIN_GAME");
         screen = new Screen();
         GameController.setScreen(screen);
+        SceneManager.setMinigameScenes(SceneBuilder.buildMinigameScenes());
         SceneManager.setGameObjectScenes(SceneBuilder.buildGameObjectScenes());
         GameController.getGameThreadController().addThread("UI_MAIN", new UIThread());
         SceneManager.setUiScenes(SceneBuilder.buildUIScenes(screen));
-        SceneManager.setMinigameScenes(SceneBuilder.buildMinigameScenes());
         screen.displayUIScene(SceneManager.getUIScene("MAIN_MENU"));
         screen.displayGameObjectScene(SceneManager.getGameObjectScene("MAIN_MENU"));
         screen.getGamePanel().setImageController(GameController.getImageController());
